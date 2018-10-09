@@ -1,0 +1,29 @@
+_ write the README.md and its simple howto for ubuntu
+_ write use-cases
+_ DB creation script: add checks for several relations :
+	_ there must exists at least two responses to each MCQ question,
+    _ when the quizz is randomly built, there must exists at least  "nbQuestions" questions of same theme as the quizz else the deletion of any of these questions will fail
+_ DB : test the "on delete" constraint
+_ write DB filling script
+_ test QCM retrieving queries
+_ write servlet to show a specific QCM, given in the URL
+_ QCM servlet: consider using slugs ?
+_ write homepage skeleton
+_ QCM servlet: add logic to decide if the user can go to the next step :
+    account creation and inscription
+_ homepage : add logging
+_ write account creation/inscription page
+_ account creation page: add email validation link, arbitrary link stored in DB
+    for a small, property-configurable validity time
+_ quizz pages servlet: write one for arbitrary quizzes, with any combination of
+    QCM / free-text answers
+_ write at least a randomly-generated quizz with its questions.
+_ mask the fact I built a too-complicated DB design, too early :-)
+
+_ finish this roadmap ...
+
+_ add password reset page and logic (reset links, time-limited validity, ...)
+_ DB creation script: add triggers for MySQL
+    (to replace the dummy « check() » statements)
+_ db creation script: write a function to use in the check (and the trigger)
+    of « answers » table: it will verify that question(questionId).isQCM == true
