@@ -11,7 +11,7 @@ _ STUDENT2, has passed all mid-cursus full tests from all its cursus
 _ FLUNK, has not passed the first interview or the full tests
 */
 create table if not exists studentStatus(
-	statusId 	int unsigned not null,
+	statusId 	int unsigned  auto_increment not null,
     name	 	nchar(32) not null,
     description nvarchar(255),
     
@@ -23,7 +23,7 @@ create table if not exists studentStatus(
 
 # used for students, wannabe students, and peoples giving emails for being answered
 create table if not exists students(
-	studentId	int unsigned not null,
+	studentId	int unsigned  auto_increment not null,
     firstName 	nchar(64) not null,
     lastName	nchar(64) not null,
     
@@ -49,7 +49,7 @@ create table if not exists students(
 
 # teachers – creators and correctors of quizzes
 create table if not exists teachers(
-	teacherId	int unsigned not null,
+	teacherId	int unsigned  auto_increment not null,
     firstName 	nchar(64) not null,
     lastName	nchar(64) not null,
     birthDate	date not null,
@@ -65,7 +65,7 @@ create table if not exists teachers(
 
 # quizz themes or subjects
 create table if not exists themes(
-	themeId		int unsigned not null,
+	themeId		int unsigned  auto_increment not null,
     name		nchar(64) not null,
     description nvarchar(255),
     
@@ -77,7 +77,7 @@ create table if not exists themes(
 
 # a question can belong to several quizz
 create table if not exists questions(
-	questionId	int unsigned not null,
+	questionId	int unsigned  auto_increment not null,
     label		nvarchar(255) not null,
     themeId		int unsigned
 					comment 'if set, the question can be used into a randomly-created quizzes (a quizz built from 𝑛 questions coming from a question pool)',
@@ -93,7 +93,7 @@ create table if not exists questions(
 
 # this table hold MCQ answers – non-MCQ questions have just no given answer
 create table if not exists answers(
-	answerId	int unsigned not null,
+	answerId	int unsigned  auto_increment not null,
     label		nvarchar(64) not null,
     isCorrect	boolean not null  default false,
     questionId	int unsigned not null,
@@ -106,7 +106,7 @@ create table if not exists answers(
 
 
 create table if not exists quizzes(
-	quizzId			int unsigned not null,
+	quizzId			int unsigned  auto_increment  auto_increment  auto_increment not null,
     name			nvarchar(128) not null,
     themeId			int unsigned not null,
     
@@ -131,7 +131,7 @@ create table if not exists quizzes(
 this table records each submission waiting for a correction 
 */
 create table if not exists resultSubmissions(
-	resultSubmissionId	int unsigned not null
+	resultSubmissionId	int unsigned  auto_increment not null
 							comment 'the DB do not forbid a student to have several time the same quizz, so we do not use a compound primary key (studentId, quizzId)',
 	studentId			int unsigned not null,
     quizzId				int unsigned not null,
