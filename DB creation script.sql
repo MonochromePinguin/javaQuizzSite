@@ -4,11 +4,10 @@ use quizzdb;
 /* student status :
 _ (not registered), can have the MCQ test
 _ ASKER:	 registered for mail exchanges only
-_ REGISTERED: have passed the MCQ, can have an interview to enroll
-_ INTERVIEWED, decision pending
+_ REGISTERED: have passed the MCQ, enrolled as student
 _ STUDENT1, 1st part, can pass full tests to get higher grade
 _ STUDENT2, has passed all mid-cursus full tests from all its cursus
-_ FLUNK, has not passed the first interview or the full tests
+_ FLUNK, had lamentably failed at some point
 */
 create table if not exists studentStatus(
 	statusId 	int unsigned  auto_increment not null,
@@ -108,17 +107,22 @@ create table if not exists answers(
 create table if not exists quizzes(
 	quizzId			int unsigned  auto_increment  auto_increment  auto_increment not null,
     name			nvarchar(128) not null,
+    slug			nvarchar(128) not null
+						comment "the slug to use in the URL",
     themeId			int unsigned not null,
     
 	teacherId		int unsigned not null
 						comment 'for now, this is the quizz''s creator, and the creator is also the only corrector – in the future, we can add an intermedary table if we want more correctors',
  
-	isRandom		boolean not null
+	isMCQ			boolean not null default true
+						comment 'if true, the quizz contains only MCQ, and can be automatically corrected; if false, it contains (or can contains in case of randomly-generated quizz) free-text answers, and cannot be automatically corrected',
+    isRandom		boolean not null
 						comment 'if true, the quizz is made from random questions pulled from a pool, and the following column is valid',
     nbQuestions		int unsigned,
     
     constraint pk_quizzId  primary key(quizzId),
     constraint uq_name	unique(name),
+    constraint uq_slug	unique(slug),
     constraint fk_themeId_of_quizzes foreign key(themeId) references themes(themeId)
 		on delete restrict,
     constraint fk_teacherId foreign key(teacherId) references teachers(teacherId)
@@ -147,7 +151,7 @@ create table if not exists resultSubmissions(
 
 
 
-# each row int this table records the answer given to a question by a student in a specific result submission
+# each row int this table records the answer given to ONE question by a student in a specific result submission
 create table if not exists resultProposal(
 	resultSubmissionId	int unsigned not null,
 	questionId			int unsigned not null,	
