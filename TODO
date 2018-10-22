@@ -1,11 +1,14 @@
-_ quizz servlet: 2 booleans → 4 combinations: 
+_ all JSP : replace the <%@ include file="" %> with a <% jsp:include page="" %> ? or juste use variables ?
+
+_ quizz servlet: 2 booleans → 4 combinations:
 	isMCQ:                pure MCQ /allow free-text answers 
     isRandom/nbQuestions: determined quizz / randomly-generated quizz with 𝑛 questions
-_ write homepage skeleton
-_ quizz servlet :
+_ finish homepage skeleton
+
+_ quizz servlet:
     use slugs in the URL
 _  quizz servlet:
-    in case of inscription MCQ : 
+    in case of inscription MCQ :
 	Cadd logic to decide if the user can go to the next step :
 		account creation and inscription
 _ add account creation/inscription page
@@ -17,6 +20,8 @@ _ account creation page:
         for a small, property-configurable validity time
 _ add password reset page and logic (reset links, time-limited validity, ...)
 _ add « contact Us / leave a message » page
+_ quizz list servlet:
+    add sort criteria (noJS, then JS; see festiZik)
 _ admin pages:
     list/remove/renames/add/modify quizzes
 _ header/a13y : buttons for changing font-size.
