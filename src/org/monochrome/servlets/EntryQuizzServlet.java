@@ -51,20 +51,22 @@ public class EntryQuizzServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //TODO: this is a test
-        if (themeList == null) {
-            this.init();
-        }
+//        if (themeList == null) {
+//            this.init();
+//        }
 
         request.setAttribute("pageTitle", "quizzSchool – entry quizz selection");
         request.setAttribute("title", "Entrance test lists" );
         request.setAttribute("subtitle", "ordered by theme" );
 
-        request.setAttribute("aboutTitle", "Please Select the quizz you wanna have");
+        request.setAttribute("aboutTitle", "Please Select the quizz with wich you wanna have your exam.");
         request.setAttribute(
                 "rawAboutText",
-                "<p>Reminder: you must pass at least "
+                ("<p>" +
+                       "<span class=\"about-em\">Reminder:</span> you must have at least <span class=\"about-em\">")
                     .concat("" + CorrectorService.winMinPercentage)
-                    .concat("% of questions to pass the quizz.</p>\n<p>Good luck!</p>")
+                    .concat("%</span> of correctly-answered questions to pass the quizz.</p>" +
+                            "<p><span class=\"about-em\">Good luck!</p>")
         );
 
         request.setAttribute("themeList", themeList);

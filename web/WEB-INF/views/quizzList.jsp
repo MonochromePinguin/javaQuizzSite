@@ -44,27 +44,30 @@ _localy used:
     </aside>
 
     <%--list of categories, each containing a list of quizzes--%>
-    <main class="list-containe border-margin-1rem">
+    <main class="border-margin-1rem">
 
         <c:forEach items="${themeList}" var="theme">
 
-            <div class="list-of-theme">
-                <p class="theme-title">${fn:escapeXml(theme.name)}</p>
+            <div class="list">
+                <p class="list-title">${fn:escapeXml(theme.name)}</p>
 
-                <c:if test="${not empty theme.name}">
-                    <p class="theme-about">${fn:escapeXml(theme.description)}</p>
+                <c:if test="${not empty theme.description}">
+                    <p class="list-about">${fn:escapeXml(theme.description)}</p>
                 </c:if>
 
-                <%--inner quizz-list loop--%>
-                <c:forEach items="${theme.quizzList}" var="quizz">
-                    <div class="list-of-item">
-                        <a class="btn btn-secondary" href="/entryQuizz/${fn:escapeXml(quizz.slug)}"
-                            title="go to quizz «${fn:escapeXml(quizz.name)}" >GO!</a>
+                <div class="list-container">
 
-                        <p class="item-title">${fn:escapeXml(quizz.name)}</p>
-                    </div>
-                </c:forEach>
+                    <%--inner quizz-list loop--%>
+                    <c:forEach items="${theme.quizzList}" var="quizz">
+                        <div class="list-item">
+                            <a class="btn btn-secondary" href="/entryQuizz/${fn:escapeXml(quizz.slug)}"
+                                title="go to quizz «${fn:escapeXml(quizz.name)}" >GO!</a>
 
+                            <p class="list-item-title">${fn:escapeXml(quizz.name)}</p>
+                        </div>
+                    </c:forEach>
+
+                </div>
             </div>
 
         </c:forEach>

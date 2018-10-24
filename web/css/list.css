@@ -1,25 +1,105 @@
-.list-of-theme {
+/*
+flex list with simple reactive positionnement:
+|----------------------------------- .list -------------------------------|
+|xxx .list-title xxx                                                      |
+|xxx .list-about xxx                                                      |
+| |--------------------------- .list-container -------------------------| |
+| | | --- .list-item ---|  | --- .list-item ---|  | --- .list-item ---| | |
+| | |-------------------|  |-------------------|  |-------------------| | |
+| |                                                                     | |
+| | | --- .list-item ---|  | --- .list-item ---|                        | |
+| | |-------------------|  |-------------------|                        | |
+| |                                                                     | |
+| |---------------------------------------------------------------------| |
+|------------------------------------------------------- -----------------|
+
+|----------------------------------- .list -------------------------------|
+|xxx .list-title xxx                                                      |
+|xxx .list-about xxx                                                      |
+| |--------------------------- .list-container -------------------------| |
+| | | --- .list-item ---|                                               | |
+| | |-------------------|                                               | |
+| |                                                                     | |
+| |---------------------------------------------------------------------| |
+|------------------------------------------------------- -----------------|
+
+and in small screen width (arbitrarily <600px):
+|----------.list ------------|
+|    xxx .list-title xxx     |
+|    xxx .list-about xxx     |
+| |---- .list-container ---| |
+| | | --- .list-item ---|  | |
+| | |-------------------|  | |
+| |                        | |
+| | | --- .list-item ---|  | |
+| | |-------------------|  | |
+| |                        | |
+| | | --- .list-item ---|  | |
+| | |-------------------|  | |
+| |------------------------| |
+|----------------------------|
+
+|----------.list ------------|
+|    xxx .list-title xxx     |
+|    xxx .list-about xxx     |
+| |---- .list-container ---| |
+| | | --- .list-item ---|  | |
+| | |-------------------|  | |
+| |------------------------| |
+|----------------------------|
+
+ */
+
+
+.list {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column wrap;
     justify-content: space-between;
+
+    margin: 2rem 1rem;
 }
 
-.theme-title {
+.list-title {
     font-size: 2rem;
-    color: darkblue;
+    color: var(--col-1);
 }
 
-.theme-about {
+.list-about {
     font-style: italic;
-    color: darkcyan;
+    color: var(--col-intro);
 }
 
-.list-of-item {
+
+.list-container {
     display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.list-item {
+    display: flex;
+    border: 0.1rem solid var(--col-1);
+
     flex-flow: row wrap;
     justify-content: center;
+    align-items: center;
+
+    margin: 1rem 2rem;
 }
 
-.item-title {
+.list-item-title {
     font-size: 1.5rem;
 }
+
+
+@media all and (min-width: 600px) {
+    .list-title,
+    .list-about { text-align: left }
+
+    .list-container {
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+}
+
