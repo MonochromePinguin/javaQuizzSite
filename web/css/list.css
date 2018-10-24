@@ -1,0 +1,25 @@
+.list-of-theme {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+.theme-title {
+    font-size: 2rem;
+    color: darkblue;
+}
+
+.theme-about {
+    font-style: italic;
+    color: darkcyan;
+}
+
+.list-of-item {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.item-title {
+    font-size: 1.5rem;
+}

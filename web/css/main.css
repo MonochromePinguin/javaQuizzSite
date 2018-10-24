@@ -43,7 +43,9 @@ table {
   to their own servlet-handled CSS file for a11y reasons */
 html {
     font-size: 1rem;
+    font-family: sans-serif;
     text-align: center;
+    background: #e4ffff;
 }
 
 :root{
@@ -55,11 +57,15 @@ html {
 }
 
 
-
 .menubar{
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
+}
+
+.border-margin-1rem {
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 
@@ -68,12 +74,13 @@ html {
 .header {
     text-align: center;
     margin: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 .main-navbar {
     width: 100vw;
     padding: 0.5rem;
+    margin-bottom: 1rem;
 
     background: var(--col-bg1);
     color: var(--col-1);
@@ -83,8 +90,7 @@ html {
 /* main title */
 /**/
 .main-title {
-    margin: 2rem;
-    font-size: 5rem;
+    font-size: 3rem;
     color: var(--col-title);
 }
 
@@ -94,7 +100,7 @@ html {
 }
 
 .main-subtitle {
-    font-size: 3rem;
+    font-size: 1.5rem;
     color: var(--col-intro);
 }
 
@@ -102,13 +108,31 @@ html {
 /*descriptive paragraph*/
 /**/
 .about-part {
-
+    text-align: left;
 }
 
 .about-title {
-
+    text-align: center;
+    color: var(--col-intro);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+@media all and (min-width: 600px) {
+    .about-title { text-align: left }
 }
 
-.about-text {
 
+.about-text {
+    text-indent: 3em;
+}
+
+.about-text > p {
+    margin-bottom: 1em;
+}
+
+.about-em {
+    color: var(--col-intro);
+    font-weight: bold;
+    font-style: italic;
+    font-size: 1.5em;
 }

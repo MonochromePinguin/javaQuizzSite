@@ -26,12 +26,13 @@ _localy used:
 
     <link rel="stylesheet" href="<%= request.getContextPath()%>/css/buttons.css">
     <link rel="stylesheet" href="<%= request.getContextPath()%>/css/main.css">
+    <link rel="stylesheet" href="<%= request.getContextPath()%>/css/list.css">
 </head>
 
 <body>
     <%@include file="/WEB-INF/views/common/header.jsp"%>
 
-    <aside class="about-part">
+    <aside class="about-part border-margin-1rem">
         <h3 class="about-title">
             ${fn:escapeXml(requestScope.aboutTitle)}
         </h3>
@@ -43,20 +44,20 @@ _localy used:
     </aside>
 
     <%--list of categories, each containing a list of quizzes--%>
-    <main class="list-container">
+    <main class="list-containe border-margin-1rem">
 
         <c:forEach items="${themeList}" var="theme">
 
-            <div class="list-category">
-                <p class="category-title">${fn:escapeXml(theme.name)}</p>
+            <div class="list-of-theme">
+                <p class="theme-title">${fn:escapeXml(theme.name)}</p>
 
                 <c:if test="${not empty theme.name}">
-                    <p class="category-about">${fn:escapeXml(theme.description)}</p>
+                    <p class="theme-about">${fn:escapeXml(theme.description)}</p>
                 </c:if>
 
                 <%--inner quizz-list loop--%>
                 <c:forEach items="${theme.quizzList}" var="quizz">
-                    <div class="list-item">
+                    <div class="list-of-item">
                         <a class="btn btn-secondary" href="/entryQuizz/${fn:escapeXml(quizz.slug)}"
                             title="go to quizz «${fn:escapeXml(quizz.name)}" >GO!</a>
 
@@ -65,6 +66,7 @@ _localy used:
                 </c:forEach>
 
             </div>
+
         </c:forEach>
     </main>
 

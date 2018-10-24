@@ -17,7 +17,7 @@ Localy used attributes:
         </ul>
     </navbar>
 
-    <h1 class="main-title">
+    <h1 class="main-title border-margin-1rem">
         <c:if test="${not empty titleIntro}">
             <span class="main-title-intro">${titleIntro}</span>
             <br>
@@ -26,7 +26,7 @@ Localy used attributes:
     </h1>
 
     <c:if test="${not empty subtitle}">
-        <h2 class="main-subtitle">${subtitle}</h2>
+        <h2 class="main-subtitle border-margin-1rem">${subtitle}</h2>
     </c:if>
 
 </header>

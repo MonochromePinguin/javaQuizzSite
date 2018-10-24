@@ -27,16 +27,17 @@ _ local use:
 
     <%@include file="/WEB-INF/views/common/header.jsp"%>
 
-    <aside class="about-part">
+    <aside class="about-part border-margin-1rem">
         <h3 class="about-title">About Us</h3>
 
         <div class="about-text">
             <p>We are the quizzSchool, a web-learning organization centered about web cursus and at distance learning.</p>
-            <p>Free entrance!</p>
             <p>
-                You just have to have an entry test, corresponding to the cursus you choose.
+                <span class="about-em">Free entrance!</span>
                 <br>
-                Take it, pass it:
+                You just have to have an entry test, corresponding to the cursus you choose.
+            <p>
+                <span class="about-em">Take it, pass it:</span>
                 <br>
                 if you have at least ${fn:escapeXml(requestScope.winMinPercentage)}% right answers, you can subscribe and join us!
             </p>
