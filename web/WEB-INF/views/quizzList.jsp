@@ -67,10 +67,33 @@ _localy used:
                         </div>
                     </c:forEach>
 
-                </div>
-            </div>
+                    <%--in case of empty list--%>
+                    <c:if test="${empty theme.quizzList}">
+                        <div class="warning list-item ">
+                            <p>
+                                There is no quizz inside this category.
+                            </p>
+                        </div> <%--div.warning.list-item--%>
+
+                    </c:if>
+
+                </div> <%--div.list-container--%>
+            </div> <%--div.list--%>
 
         </c:forEach>
+
+        <%--in case of empty theme list--%>
+        <c:if test="${empty themeList}">
+            <div class="list">
+                <p class="list-title warning">Sorry...</p>
+                <div class="list-about warning">
+                    <p>It seems no quizz is present. No one.</p>
+                    <p>Perhaps there is a problem in our servers.</p>
+                    <p>Please try later.</p>
+                </div>
+            </div>
+        </c:if>
+
     </main>
 
 </body>

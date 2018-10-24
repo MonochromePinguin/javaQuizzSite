@@ -56,7 +56,8 @@ html {
     --col-title: aquamarine;
 }
 
-
+/* reusable classes */
+/**/
 .menubar{
     display: flex;
     flex-flow: row wrap;
@@ -68,6 +69,16 @@ html {
     margin-right: 1rem;
 }
 
+.warning {
+    padding: 0.25em;
+
+    font-style: italic !important;
+    font-weight: bold !important;
+
+    color: lightsalmon !important;
+
+    border-color: lightcoral !important;
+}
 
 /* header CSS */
 /**/

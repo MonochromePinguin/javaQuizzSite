@@ -43,8 +43,9 @@ public class EntryQuizzServlet extends HttpServlet {
 
         themeList = new Theme[] {
                 new Theme(1, "theme1", "theme description", quizzList1 ),
-                new Theme(1, "theme #2", "theme #2 description", quizzList2 ),
-                new Theme(1, "theme #2½ – nothing!", "theme #3 description – blablabla", quizzList3 )
+                new Theme(2, "empty theme!", "nothing inside this theme. Not Worth of.", null ),
+                new Theme(3, "theme #2", "theme #2 description", quizzList2 ),
+                new Theme(4, "theme #2½ – sfmlsjfslej", "theme #3 description – blablabla", quizzList3 ),
         };
     };
 
