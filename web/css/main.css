@@ -43,6 +43,7 @@ table {
   to their own servlet-handled CSS file for a11y reasons */
 html {
     font-size: 1rem;
+    text-align: center;
 }
 
 :root{
@@ -56,12 +57,14 @@ html {
 
 
 .menubar{
-    flex-horizdisplay: flex;
+    display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
 }
 
+
 /* header CSS */
+/**/
 .header {
     text-align: center;
     margin: 0;
@@ -76,7 +79,9 @@ html {
     color: var(--col-1);
 }
 
+
 /* main title */
+/**/
 .main-title {
     margin: 2rem;
     font-size: 5rem;
@@ -93,3 +98,17 @@ html {
     color: var(--col-intro);
 }
 
+
+/*descriptive paragraph*/
+/**/
+.about-part {
+
+}
+
+.about-title {
+
+}
+
+.about-text {
+
+}

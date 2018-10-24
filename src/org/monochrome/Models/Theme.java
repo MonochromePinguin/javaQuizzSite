@@ -31,4 +31,22 @@ public class Theme {
 
         this.quizzList = quizzList;
     }
+
+
+
+    public long getThemeId() {
+        return themeId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Quizz[] getQuizzList() {
+        return quizzList;
+    }
 }

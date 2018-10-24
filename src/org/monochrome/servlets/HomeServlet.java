@@ -2,6 +2,8 @@ package org.monochrome.servlets;
 
 /* homePage servlet */
 
+import org.monochrome.services.CorrectorService;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +19,8 @@ public class HomeServlet extends HttpServlet {
         request.setAttribute("titleIntro", "welcome to" );
         request.setAttribute("subtitle", "web learning" );
 
+        request.setAttribute("winMinPercentage", CorrectorService.winMinPercentage);
+        
         request.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(request, response);
     }
 

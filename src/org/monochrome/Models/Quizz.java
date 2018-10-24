@@ -32,4 +32,37 @@ public class Quizz {
         this.isRandom = isRandom;
         this.nbQuestions = nbQuestions;
     }
+
+
+    public long getQuizzId() {
+        return quizzId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public long getThemeId() {
+        return themeId;
+    }
+
+    public long getTeacherId() {
+        return teacherId;
+    }
+
+    public boolean isMcq() {
+        return isMcq;
+    }
+
+    public boolean isRandom() {
+        return isRandom;
+    }
+
+    public int getNbQuestions() {
+        return nbQuestions;
+    }
 }

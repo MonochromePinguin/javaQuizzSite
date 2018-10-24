@@ -1,5 +1,3 @@
-_ all JSP : replace the <%@ include file="" %> with a <% jsp:include page="" %> ? or juste use variables ?
-
 _ quizz servlet: 2 booleans → 4 combinations:
 	isMCQ:                pure MCQ /allow free-text answers 
     isRandom/nbQuestions: determined quizz / randomly-generated quizz with 𝑛 questions

@@ -1,4 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%-- accepted attributes :
+_ forwarded to header.jsp:
+    titleIntro?
+    title
+    subtitle?
+_ local use:
+    winMinPercentage    minimum percentage of good answers to pass the test
+--%>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,27 +19,34 @@
     <meta name="description" content="quizzSchool Web learning">
     <meta name="keywords" content="school, learning, quizz, inscription, test">
 
-    <link rel="stylesheet" href="/css/buttons.css">
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="<%= request.getContextPath()%>/css/buttons.css">
+    <link rel="stylesheet" href="<%= request.getContextPath()%>/css/main.css">
 </head>
 
 <body>
 
     <%@include file="/WEB-INF/views/common/header.jsp"%>
 
-    <aside>
-        <h3 class="about-us-title">About Us</h3>
+    <aside class="about-part">
+        <h3 class="about-title">About Us</h3>
 
-        <div class="about-us-text">
-            TODO: WRITE DESCRIPTIVE TEXT
-            <%--TODO: WRITE DESCRIPTIVE TEXT ...--%>
+        <div class="about-text">
+            <p>We are the quizzSchool, a web-learning organization centered about web cursus and at distance learning.</p>
+            <p>Free entrance!</p>
+            <p>
+                You just have to have an entry test, corresponding to the cursus you choose.
+                <br>
+                Take it, pass it:
+                <br>
+                if you have at least ${fn:escapeXml(requestScope.winMinPercentage)}% right answers, you can subscribe and join us!
+            </p>
         </div>
     </aside>
 
     <aside>
         <a class="btn btn-primary big"
-            title="go to the tests categories and choose one" href="/quizzList" >
-           have the Entrance test
+            title="go to the tests categories and choose one" href="<%= request.getContextPath()%>/entryQuizz" >
+           Go to the Entrance test
         </a>
     </aside>
 
