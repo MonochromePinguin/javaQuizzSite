@@ -11,16 +11,7 @@ public class Quizz {
     public boolean isRandom;
     public int nbQuestions;
 
-    public Quizz() {
-        this.quizzId = 0;
-        this.name = 
-        this.slug = null;
-        this.themeId =
-        this.teacherId = 0;
-        isMcq =
-        isRandom = false;
-        this.nbQuestions = 0;
-    }
+    public Quizz() {}
 
     public Quizz(long quizzId, String name, String slug, long themeId, long teacherId, boolean isMcq, boolean isRandom, int nbQuestions) {
         this.quizzId = quizzId;

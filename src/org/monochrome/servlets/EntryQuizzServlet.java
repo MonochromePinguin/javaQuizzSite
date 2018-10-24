@@ -5,6 +5,7 @@ package org.monochrome.servlets;
 import org.monochrome.Models.Quizz;
 import org.monochrome.Models.Theme;
 import org.monochrome.services.CorrectorService;
+import org.monochrome.services.Factory;
 import org.monochrome.services.SingleLogger;
 
 import javax.servlet.ServletException;
@@ -25,6 +26,7 @@ public class EntryQuizzServlet extends HttpServlet {
     public void init(){
         SingleLogger.logger.info("● EntryQuizzServlet.init() called");
 
+/*
         //TODO: replace this test with a real DB access
         Quizz quizzList1[] = {
                 new Quizz(1, "MCQ, Qquizz 1 – blablabla ... Bla !", "quizz-1-blablabla",
@@ -45,16 +47,15 @@ public class EntryQuizzServlet extends HttpServlet {
                 new Theme(1, "theme1", "theme description", quizzList1 ),
                 new Theme(2, "empty theme!", "nothing inside this theme. Not Worth of.", null ),
                 new Theme(3, "theme #2", "theme #2 description", quizzList2 ),
-                new Theme(4, "theme #2½ – sfmlsjfslej", "theme #3 description – blablabla", quizzList3 ),
+                new Theme(4, "theme #2½ – sfmlsjfslej", "theme #3 description – blablabla", quizzList3 )
         };
-    };
+*/
+
+        themeList = Factory.getThemeDataSource().getThemesAndQuizzes(true, true, false);
+    }
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //TODO: this is a test
-//        if (themeList == null) {
-//            this.init();
-//        }
 
         request.setAttribute("pageTitle", "quizzSchool – entry quizz selection");
         request.setAttribute("title", "Entrance test lists" );
@@ -63,7 +64,8 @@ public class EntryQuizzServlet extends HttpServlet {
         request.setAttribute("aboutTitle", "Please Select the quizz with wich you wanna have your exam.");
         request.setAttribute(
                 "rawAboutText",
-                ("<p>" +
+                ("<p>As a candidate, you'll have to choose amongst some MCQ.</p>\n" +
+                 "<p>\n" +
                        "<span class=\"about-em\">Reminder:</span> you must have at least <span class=\"about-em\">")
                     .concat("" + CorrectorService.winMinPercentage)
                     .concat("%</span> of correctly-answered questions to pass the quizz.</p>" +

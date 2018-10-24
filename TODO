@@ -1,25 +1,27 @@
+_ quizz servlet:
+    add nbQuestions and isMCQ fields, and « isRandom » only in case of admin-logged,
+    add teacherId.name, and also a « last Modified Date »
+
 _ quizz servlet: 2 booleans → 4 combinations:
 	isMCQ:                pure MCQ /allow free-text answers 
     isRandom/nbQuestions: determined quizz / randomly-generated quizz with 𝑛 questions
-_ finish homepage skeleton
 
 _ quizz servlet:
-    use slugs in the URL
+    use slugs in the URL as well as numeric id for routing
 _  quizz servlet:
     in case of inscription MCQ :
 	Cadd logic to decide if the user can go to the next step :
 		account creation and inscription
 _ add account creation/inscription page
 _ add logging page
-_ MCQ servlet:
-    use slugs
 _ account creation page:
     add email validation link, arbitrary link stored in DB
         for a small, property-configurable validity time
 _ add password reset page and logic (reset links, time-limited validity, ...)
 _ add « contact Us / leave a message » page
-_ quizz list servlet:
-    add sort criteria (noJS, then JS; see festiZik)
+_ quizz list JSP:
+    _ add sort criteria (noJS, then JS; see festiZik): at least name and edit date
+    _ add quizz quality (random/fix, MCQ/with free text answers, last edit date) and question number display
 _ admin pages:
     list/remove/renames/add/modify quizzes
 _ header/a13y : buttons for changing font-size.
@@ -30,12 +32,16 @@ _ header/a13y : buttons for changing font-size.
         html {
             font-size: <%= fontSize %>
         }
-→ all sizes in main.css are in *rem* ... 
+→ all sizes in main.css are in *rem* ...
+_ quizz list JSP:
+    add SVG icons on warning messages and perhaps other places
 
 _ admin pages:
     retrieving leaved messages,
     adding/removing students, teachers
 
+_security:
+    _care about ${rawAboutText} and possible vulnerabilities
 
 _ DB creation script: add triggers for MySQL
     (to replace the dummy « check() » statements)

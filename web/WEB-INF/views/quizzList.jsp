@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%-- accepted attributes :
+<%--
+• quizz list page – quizzes are grouped by theme
+• accepted attributes :
 _ forwarded to header.jsp:
     titleIntro?
     title
