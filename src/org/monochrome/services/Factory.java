@@ -1,12 +1,10 @@
 package org.monochrome.services;
 
-import org.monochrome.persistence.QuizzDataSource;
+import org.monochrome.persistence.QuizzRepository;
 import org.monochrome.persistence.StorageBackend;
-import org.monochrome.persistence.ThemeDataSource;
+import org.monochrome.persistence.ThemeRepository;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 
 /* this class is menat to be a really naive implementation of the factory pattern –
@@ -23,8 +21,8 @@ public final class Factory {
 
 
     private static StorageBackend storage = null;
-    private static ThemeDataSource themeSource = null;
-    private static QuizzDataSource quizzSource = null;
+    private static ThemeRepository themeSource = null;
+    private static QuizzRepository quizzSource = null;
 
 
     public static StorageBackend getStorageBackend() {
@@ -41,17 +39,17 @@ public final class Factory {
     }
 
 
-    public static ThemeDataSource getThemeDataSource() {
+    public static ThemeRepository getThemeRepository() {
         if (themeSource == null) {
-            themeSource = new ThemeDataSource(Factory.getStorageBackend(), Factory.getQuizzDataSource());
+            themeSource = new ThemeRepository(Factory.getStorageBackend(), Factory.getQuizzRepository());
         }
         return themeSource;
     }
 
 
-    public static QuizzDataSource getQuizzDataSource() {
+    public static QuizzRepository getQuizzRepository() {
         if (quizzSource == null) {
-            quizzSource = new QuizzDataSource(Factory.getStorageBackend());
+            quizzSource = new QuizzRepository(Factory.getStorageBackend());
         }
         return quizzSource;
     }

@@ -8,13 +8,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 
-public class QuizzDataSource {
+public class QuizzRepository {
 
     private static final String table = "quizzes";
 
     private final StorageBackend storage;
 
-    public QuizzDataSource(StorageBackend storage) {
+    public QuizzRepository(StorageBackend storage) {
         this.storage = storage;
     }
 

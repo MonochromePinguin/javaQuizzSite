@@ -3,21 +3,19 @@ package org.monochrome.persistence;
 import org.monochrome.Models.Theme;
 import org.monochrome.services.SingleLogger;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.logging.Level;
 
-public class ThemeDataSource {
+public class ThemeRepository {
 
     private static final String table = "themes";
 
     private final StorageBackend storage;
-    private final QuizzDataSource quizzSource;
+    private final QuizzRepository quizzSource;
 
-    public ThemeDataSource(StorageBackend storage, QuizzDataSource quizzSource) {
+    public ThemeRepository(StorageBackend storage, QuizzRepository quizzSource) {
         this.storage = storage;
         this.quizzSource = quizzSource;
     }
@@ -32,19 +30,10 @@ public class ThemeDataSource {
      * @return Theme[]
      */
     public Theme[] getThemesAndQuizzes(boolean acceptEmptyThemes, boolean onlyMCQ, boolean acceptRandomQuizzes) {
-        Theme[] result;
+        LinkedList<Theme> themeList = new LinkedList<>();
 
         try {
             ResultSet rs = this.storage.executeQuery("SELECT * FROM " + this.table);
-
-            //TODO: is'nt it weird and inneficient ? should I REALLY build an arrayList, and then an array?
-            //count the number of rows returned into the ResultSet
-            rs.last();
-            int nbRows = rs.getRow();
-            rs.beforeFirst();
-
-            result = new Theme[nbRows];
-            nbRows = 0;
 
             while (rs.next()) {
                 Theme theme = new Theme();
@@ -54,10 +43,12 @@ public class ThemeDataSource {
                 theme.description = rs.getString("description");
                 theme.quizzList = this.quizzSource.getQuizzesByThemeId(theme.themeId, onlyMCQ, acceptRandomQuizzes);
 
-                result[nbRows++] = theme;
+                if ( acceptEmptyThemes || ( theme.quizzList != null && theme.quizzList.length > 0 ) ) {
+                    //do not enlist themes whith no related quizz
+                    themeList.add(theme);
+                }
             }
-
-            return result;
+            return themeList.toArray(new Theme[]{} );
 
         } catch (SQLException e ) {
             SingleLogger.logger.severe("Impossible to read Theme data from DB:");
