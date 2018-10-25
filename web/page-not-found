@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>quizzSchool – this is not the page you're looking-for...</title>
+
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+    <!--TODO: add an image or something like this-->
+
+    <header>
+        <h1 class="main-title">
+            <span class="main-title-intro">here is a splendid</span>
+            <br>
+            404 – NOT FOUND
+        </h1>
+    </header>
+
+    <main class="warning">
+        <p>This is not the page you are looking for...</p>
+        <p>the URL you asked cannot just be found.</p>
+        <p>Sorry!</p>
+    </main>
+
+    <aside>
+        <a href="/" title="There is nowhere to go in that URL" class="btn btn-primary big">Go back to the homepage</a>
+    </aside>
+</body>
+</html>
