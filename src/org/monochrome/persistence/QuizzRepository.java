@@ -1,6 +1,7 @@
 package org.monochrome.persistence;
 
 import org.monochrome.Models.Quizz;
+import org.monochrome.Models.Theme;
 import org.monochrome.services.SingleLogger;
 
 import java.sql.PreparedStatement;
@@ -21,7 +22,88 @@ public class QuizzRepository {
     }
 
 
-    public Quizz[] getQuizzesByThemeId(long themeId, boolean acceptOnlyMCQ, boolean acceptRandomQuizzes) {
+
+    public Quizz getQuizzById(long id, boolean withFullData, boolean withQuestionsAndAnswers) {
+
+        try {
+            PreparedStatement statement = storage.getPreparedStatement(
+                    "SELECT * FROM " + QuizzRepository.table + " WHERE quizzId = ?"
+            );
+            statement.setLong(1, id);
+            statement.executeQuery();
+
+            ResultSet rs = statement.getResultSet();
+            return buildQuizz(rs, withFullData, withQuestionsAndAnswers);
+
+        } catch (SQLException e) {
+            SingleLogger.logger.severe("Impossible to load a quizz from DB:");
+            SingleLogger.logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+            return null;
+        }
+    }
+
+
+    public Quizz getQuizzBySlug(String slug, boolean withFullData, boolean withQuestionsAndAnswers) {
+        //remember: prepared statements are immune to SQL injection...
+        try {
+            PreparedStatement statement = storage.getPreparedStatement(
+                    "SELECT * FROM " + QuizzRepository.table + " WHERE slug like ?"
+            );
+            statement.setString(1, slug);
+            statement.executeQuery();
+
+            ResultSet rs = statement.getResultSet();
+            return buildQuizz(rs, withFullData, withQuestionsAndAnswers);
+
+        } catch (SQLException e) {
+            SingleLogger.logger.severe("Impossible to load a quizz from DB:");
+            SingleLogger.logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+            return null;
+        }
+    }
+
+
+    /**
+     *  HELPER FUNCTION – build a Quizz from data extracted *from the 1st row* of the ResultSet
+     * @param rs                            the ResultSet filled by the calling method
+     * @param withFullData                  do we need to stuff object' fields with the row data?
+     *                                        Without it, themeId, teacherId, isMcq, isRandom, nbQuestions are left out
+     * @param withQuestionsAndAnswers       do we need to include full
+     * @return Quizz or null
+     */
+    //TODO: the two boolean are UNUSED, no additional data is ever sent back
+    protected Quizz buildQuizz(ResultSet rs, boolean withFullData, boolean withQuestionsAndAnswers) {
+        Quizz quizz;
+
+        try {
+            //there is at most one row returned...
+            if (!rs.next()) {
+                return null;
+            }
+
+            quizz = new Quizz(
+                rs.getLong("quizzId"),
+                rs.getString("name"),
+                rs.getString("slug"),
+                null,
+                withFullData ? rs.getLong("teacherId") : 0,
+                withFullData ? rs.getBoolean("isMcq") : false,
+                withFullData ? rs.getBoolean("isRandom") : false,
+                withFullData ? rs.getInt("nbQuestions") : 0,
+              null
+            );
+            return quizz;
+
+        } catch (SQLException e) {
+            SingleLogger.logger.severe("Impossible to load a quizz from DB:");
+            SingleLogger.logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+            return null;
+        }
+    }
+
+
+
+    public Quizz[] getQuizzesByTheme(Theme theme, boolean acceptOnlyMCQ, boolean acceptRandomQuizzes) {
         Quizz[] result;
 
         try {
@@ -31,7 +113,7 @@ public class QuizzRepository {
                         + ( acceptRandomQuizzes ? "" : " AND isRandom = 0" )
             );
 
-            statement.setLong(1, themeId );
+            statement.setLong(1, theme.themeId );
             statement.executeQuery();
 
             //now, parse the result
@@ -56,7 +138,7 @@ public class QuizzRepository {
                 quizz.quizzId = rs.getLong("quizzId");
                 quizz.name = rs.getString("name");
                 quizz.slug = rs.getString("slug");
-                quizz.themeId = rs.getLong("themeId");
+                quizz.theme = theme;
                 quizz.teacherId = rs.getLong("teacherId");
                 quizz.isMcq = rs.getBoolean("isMCQ");
                 quizz.isRandom = rs.getBoolean("isRandom");
@@ -72,6 +154,6 @@ public class QuizzRepository {
             SingleLogger.logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
             return null;
         }
-
     }
+
 }

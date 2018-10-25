@@ -21,10 +21,10 @@
     <servlet-mapping>
         <servlet-name>entryQuizzServlet</servlet-name>
         <url-pattern>/entryQuizz</url-pattern>  <!-- for entry test quizz selection -->
-        <url-pattern>/entrytest/*</url-pattern> <!-- for individual quizz pages -->
+        <url-pattern>/entryQuizz/*</url-pattern> <!-- for individual quizz pages -->
     </servlet-mapping>
 
-    
+
     <error-page>
         <error-code>404</error-code>
         <location>/page-not-found</location>

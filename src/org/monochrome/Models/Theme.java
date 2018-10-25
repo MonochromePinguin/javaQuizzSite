@@ -28,7 +28,7 @@ public class Theme {
     }
 
 
-
+    //GETTERS ARE NEEDED BY THE JPS PART!
     public long getThemeId() {
         return themeId;
     }

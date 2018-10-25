@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%-- accepted attributes :
+<%--
+accepted attributes :
 _ forwarded to header.jsp:
     titleIntro?
     title

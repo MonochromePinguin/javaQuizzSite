@@ -41,7 +41,7 @@ public class ThemeRepository {
                 theme.themeId = rs.getLong("themeId");
                 theme.name = rs.getString("name");
                 theme.description = rs.getString("description");
-                theme.quizzList = this.quizzSource.getQuizzesByThemeId(theme.themeId, onlyMCQ, acceptRandomQuizzes);
+                theme.quizzList = this.quizzSource.getQuizzesByTheme(theme, onlyMCQ, acceptRandomQuizzes);
 
                 if ( acceptEmptyThemes || ( theme.quizzList != null && theme.quizzList.length > 0 ) ) {
                     //do not enlist themes whith no related quizz

@@ -1,30 +1,48 @@
 package org.monochrome.Models;
 
+import java.util.List;
+import java.util.Map;
+
 //PUBLIC FIELDS: BAD PRACTICE, BUT EASY FOR THESE SIMPLE OBJECTS
 public class Quizz {
     public long quizzId;
     public String name;
     public String slug;
-    public long themeId;
+    public Theme theme;
     public long teacherId;
     public boolean isMcq;
     public boolean isRandom;
     public int nbQuestions;
 
+    public List<Question> questionList;
+
     public Quizz() {}
 
-    public Quizz(long quizzId, String name, String slug, long themeId, long teacherId, boolean isMcq, boolean isRandom, int nbQuestions) {
+    public Quizz(
+            long quizzId,
+            String name,
+            String slug,
+            Theme theme,
+            long teacherId,
+            boolean isMcq,
+            boolean isRandom,
+            int nbQuestions,
+            List<Question> questionList
+    ) {
         this.quizzId = quizzId;
         this.name = name;
         this.slug = slug;
-        this.themeId = themeId;
+        this.theme = theme;
         this.teacherId = teacherId;
         this.isMcq = isMcq;
         this.isRandom = isRandom;
         this.nbQuestions = nbQuestions;
+        this.questionList = questionList;
     }
 
 
+    //GETTERS ARE NEEDED BY THE JSP PART!
+    //
     public long getQuizzId() {
         return quizzId;
     }
@@ -37,8 +55,8 @@ public class Quizz {
         return slug;
     }
 
-    public long getThemeId() {
-        return themeId;
+    public Theme getTheme() {
+        return theme;
     }
 
     public long getTeacherId() {
@@ -56,4 +74,6 @@ public class Quizz {
     public int getNbQuestions() {
         return nbQuestions;
     }
+
+    public List<Question> getQuestionList() { return questionList; }
 }
