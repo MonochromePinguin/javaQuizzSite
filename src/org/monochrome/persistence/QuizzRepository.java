@@ -2,6 +2,7 @@ package org.monochrome.persistence;
 
 import org.monochrome.Models.Quizz;
 import org.monochrome.Models.Theme;
+import org.monochrome.services.Factory;
 import org.monochrome.services.SingleLogger;
 
 import java.sql.PreparedStatement;
@@ -71,7 +72,7 @@ public class QuizzRepository {
      * @param withQuestionsAndAnswers       do we need to include full
      * @return Quizz or null
      */
-    //TODO: the two boolean are UNUSED, no additional data is ever sent back
+    //TODO: withQuestionAndAnswers is UNUSED, no additional data is ever sent back
     protected Quizz buildQuizz(ResultSet rs, boolean withFullData, boolean withQuestionsAndAnswers) {
         Quizz quizz;
 
@@ -85,7 +86,9 @@ public class QuizzRepository {
                 rs.getLong("quizzId"),
                 rs.getString("name"),
                 rs.getString("slug"),
-                null,
+                withFullData ?
+                        Factory.getThemeRepository().getThemeById(rs.getLong("themeId"), false )
+                        : null,
                 withFullData ? rs.getLong("teacherId") : 0,
                 withFullData ? rs.getBoolean("isMcq") : false,
                 withFullData ? rs.getBoolean("isRandom") : false,

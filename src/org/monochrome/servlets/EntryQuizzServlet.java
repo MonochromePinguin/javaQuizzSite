@@ -72,7 +72,7 @@ public class EntryQuizzServlet extends HttpServlet {
         if (StringUtils.isStrictlyNumeric(quizzPattern)) {
             try {
                 long quizzId = Long.parseLong(quizzPattern);
-                quizz = this.quizzRepository.getQuizzById(quizzId, false, true);
+                quizz = this.quizzRepository.getQuizzById(quizzId, true, true);
 
                 //quizz found by id
                 if (quizz != null) {
@@ -85,7 +85,7 @@ public class EntryQuizzServlet extends HttpServlet {
         }
 
         //is this a route to a quizz by its slug?
-        quizz = this.quizzRepository.getQuizzBySlug(quizzPattern, false, true);
+        quizz = this.quizzRepository.getQuizzBySlug(quizzPattern, true, true);
         if (quizz != null) {
             this.showQuizzPage(request, response, quizz );
             return;
@@ -126,7 +126,7 @@ public class EntryQuizzServlet extends HttpServlet {
     {
         request.setAttribute("pageTitle", "quizzSchool – entry test");
         request.setAttribute("title", quizz.name );
-        if (quizz.theme != null && quizz.theme.name != null) {
+        if (quizz.theme != null) {
             request.setAttribute("subtitle", quizz.theme.name );
         }
 
