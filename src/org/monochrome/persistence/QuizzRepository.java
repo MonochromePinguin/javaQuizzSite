@@ -10,9 +10,11 @@ import java.util.logging.Level;
 
 public class QuizzRepository {
 
-    private static final String table = "quizzes";
-
     private final StorageBackend storage;
+
+    private static final String table = "quizzes";
+    private static final String requestQuizzesByThemeId = "SELECT * FROM " + QuizzRepository.table + " WHERE themeId = ?";
+
 
     public QuizzRepository(StorageBackend storage) {
         this.storage = storage;
@@ -24,14 +26,16 @@ public class QuizzRepository {
 
         try {
             PreparedStatement statement = storage.getPreparedStatement(
-                    "SELECT * FROM " + this.table + " WHERE isMCQ = ? AND isRandom = ? AND themeId = ?"
+                QuizzRepository.requestQuizzesByThemeId
+                        + ( acceptOnlyMCQ ? " AND isMCQ = 1"  :  "" )
+                        + ( acceptRandomQuizzes ? "" : " AND isRandom = 0" )
             );
-            statement.setBoolean(1, acceptOnlyMCQ );
-            statement.setBoolean(2, acceptRandomQuizzes );
-            statement.setLong(3, themeId );
 
+            statement.setLong(1, themeId );
             statement.executeQuery();
 
+            //now, parse the result
+            //
             ResultSet rs = statement.getResultSet();
             int nbRows;
 
