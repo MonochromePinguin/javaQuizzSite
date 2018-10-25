@@ -131,6 +131,20 @@ create table if not exists quizzes(
 
 
 
+# intermedary table between quizzes and questions
+create table if not exists inter_questions_quizzes(
+    questionId int unsigned  not null,
+    quizzId    int unsigned  not null,
+
+    constraint fk_questionId_interTbl  foreign key(questionId) references questions(questionId)
+        on delete restrict,
+    constraint fk_quizzId_interTbl  foreign key(quizzId) references quizzes(quizzId)
+        on delete restrict,
+    constraint pk_questionId_quizzId primary key(questionId, quizzId)
+);
+
+
+
 /* each time a student has a quizz that contains at least one free-text answer, its answers are recorded in DB for ulterior correction;
 this table records each submission waiting for a correction 
 */
