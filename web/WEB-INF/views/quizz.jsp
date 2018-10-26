@@ -1,3 +1,6 @@
+<%@ page import="org.monochrome.Models.Question" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Iterator" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
@@ -45,7 +48,7 @@ _localy used:
         </div>
     </aside>
 
-    <%--list of categories, each containing a list of quizzes--%>
+    <%--list of questions, each containing a list of possible answers--%>
     <main class="border-margin-1rem">
 
         <c:forEach items="${questionList}" var="question">
@@ -56,9 +59,9 @@ _localy used:
                 <div class="list-container">
 
                     <%--inner question-list loop--%>
-                    <c:forEach items="${question.answerList}" var="quizz">
+                    <c:forEach items="${question.answerList}" var="answer">
                         <div class="list-item">
-                            <label>{fn:escapeXml(question.label)}
+                            <label>{fn:escapeXml(answer.label)}
                                 <input type="checkbox"> value=""/>
                             </label>
                         </div>

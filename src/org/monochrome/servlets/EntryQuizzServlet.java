@@ -19,6 +19,7 @@ TODO: create a mechanism of data discarding when the DB is updated through our a
 
 
 import com.mysql.cj.util.StringUtils;
+import org.monochrome.Models.Question;
 import org.monochrome.Models.Quizz;
 import org.monochrome.Models.Theme;
 import org.monochrome.persistence.QuizzRepository;
@@ -32,6 +33,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 @WebServlet
 public class EntryQuizzServlet extends HttpServlet {
@@ -141,9 +144,7 @@ public class EntryQuizzServlet extends HttpServlet {
                         "                           <span class=\"about-em\">Good Luck!</span>")
         );
 
-
         request.setAttribute("questionList", quizz.questionList);
-
         request.getRequestDispatcher("/WEB-INF/views/quizz.jsp").forward(request, response);
     }
 

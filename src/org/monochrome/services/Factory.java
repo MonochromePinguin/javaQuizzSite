@@ -1,8 +1,6 @@
 package org.monochrome.services;
 
-import org.monochrome.persistence.QuizzRepository;
-import org.monochrome.persistence.StorageBackend;
-import org.monochrome.persistence.ThemeRepository;
+import org.monochrome.persistence.*;
 
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -23,6 +21,8 @@ public final class Factory {
     private static StorageBackend storage = null;
     private static ThemeRepository themeSource = null;
     private static QuizzRepository quizzSource = null;
+    private static QuestionRepository questionSource = null;
+    private static AnswerRepository answerSource = null;
 
 
     public static StorageBackend getStorageBackend() {
@@ -49,9 +49,25 @@ public final class Factory {
 
     public static QuizzRepository getQuizzRepository() {
         if (quizzSource == null) {
-            quizzSource = new QuizzRepository(Factory.getStorageBackend());
+            quizzSource = new QuizzRepository(Factory.getStorageBackend(), Factory.getQuestionRepository());
         }
         return quizzSource;
+    }
+
+
+    public static QuestionRepository getQuestionRepository() {
+        if (questionSource == null) {
+            questionSource = new QuestionRepository(Factory.getStorageBackend(), Factory.getAnswerRepository());
+        }
+        return questionSource;
+    }
+
+
+    public static AnswerRepository getAnswerRepository() {
+        if (answerSource == null) {
+            answerSource = new AnswerRepository(Factory.getStorageBackend());
+        }
+        return answerSource;
     }
 
 }

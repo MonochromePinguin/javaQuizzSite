@@ -12,14 +12,18 @@ import java.util.logging.Level;
 
 public class QuizzRepository {
 
-    private final StorageBackend storage;
-
     private static final String table = "quizzes";
+
+    private final StorageBackend storage;
+    private final QuestionRepository questionSource;
+
     private static final String requestQuizzesByThemeId = "SELECT * FROM " + QuizzRepository.table + " WHERE themeId = ?";
 
 
-    public QuizzRepository(StorageBackend storage) {
+    public QuizzRepository(StorageBackend storage, QuestionRepository questionRepository)
+    {
         this.storage = storage;
+        this.questionSource = questionRepository;
     }
 
 
@@ -72,7 +76,6 @@ public class QuizzRepository {
      * @param withQuestionsAndAnswers       do we need to include full
      * @return Quizz or null
      */
-    //TODO: withQuestionAndAnswers is UNUSED, no additional data is ever sent back
     protected Quizz buildQuizz(ResultSet rs, boolean withFullData, boolean withQuestionsAndAnswers) {
         Quizz quizz;
 
@@ -82,19 +85,29 @@ public class QuizzRepository {
                 return null;
             }
 
-            quizz = new Quizz(
-                rs.getLong("quizzId"),
-                rs.getString("name"),
-                rs.getString("slug"),
-                withFullData ?
-                        Factory.getThemeRepository().getThemeById(rs.getLong("themeId"), false )
-                        : null,
-                withFullData ? rs.getLong("teacherId") : 0,
-                withFullData ? rs.getBoolean("isMcq") : false,
-                withFullData ? rs.getBoolean("isRandom") : false,
-                withFullData ? rs.getInt("nbQuestions") : 0,
-              null
-            );
+            quizz = new Quizz();
+
+            quizz.quizzId = rs.getLong("quizzId");
+            quizz.name = rs.getString("name");
+            quizz.slug = withFullData ? rs.getString("slug")  :  null;
+            quizz.theme = withFullData ?
+                    Factory.getThemeRepository().getThemeById(rs.getLong("themeId"), false )
+                    : null;
+            quizz.isMcq = rs.getBoolean("isMcq");
+            quizz.isRandom = rs.getBoolean("isRandom");
+            quizz.teacherId = withFullData ? rs.getLong("teacherId") : 0;
+            quizz.nbQuestions = (withFullData || (withQuestionsAndAnswers && quizz.isRandom)) ?
+                                    rs.getInt("nbQuestions") : 0;
+            quizz.questionList = withQuestionsAndAnswers ?
+                    this.questionSource.getQuestionsByQuizzId(
+                            quizz.quizzId,
+                            true,
+                            quizz.isRandom ? quizz.nbQuestions : 0 )
+                    :  null;
+
+            if (withFullData && !quizz.isRandom && quizz.questionList != null) {
+                quizz.nbQuestions = quizz.questionList.size();
+            }
             return quizz;
 
         } catch (SQLException e) {
