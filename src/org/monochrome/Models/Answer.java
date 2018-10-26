@@ -12,4 +12,16 @@ public class Answer {
         this.label = label;
         this.isCorrect = isCorrect;
     }
+
+    public long getAnswerId() {
+        return answerId;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public boolean isCorrect() {
+        return isCorrect;
+    }
 }
