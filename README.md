@@ -60,8 +60,15 @@ or allowing questions with free-text answers ?
 ####Installation:
 **WARNING!**  
  this part is _**under construction. TODO!**_
- * clone or donwload the sources.
- * copy under the _**lib/**_ folder these dependencies:
+* clone or donwload the sources.
+
+* set up the database:
+   * either source into your mysql client the script **DB creation script.sql**, if you want an empty database,  
+ or create a empty database, and then populate it by sourcing the sql script **DB test data insertion script.sql** which will create and fill the tables.
+    * eventually add an user to the database and give them the needed access rights on the created database.
+    * modify the file src/org/monochrome/config/app.properties to reflect your configuration.
+
+* copy under the _**lib/**_ folder these dependencies:  
     jstp-1.2.jar
     mysql-connector-java-8.0.13.jar
     protobuf-java-3.6.1.jar

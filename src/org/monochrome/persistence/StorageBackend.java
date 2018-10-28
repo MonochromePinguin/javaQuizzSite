@@ -14,10 +14,11 @@ public class StorageBackend {
     private Connection connection = null;
 
     public StorageBackend (
+            String driverClassName,
             String serverURL, String db, String serverURLparameters,
             String user, String password) throws SQLException, ClassNotFoundException {
 
-        Class.forName("com.mysql.cj.jdbc.Driver");
+        Class.forName(driverClassName);
 
         this.connection = DriverManager.getConnection(
             serverURL.concat(db).concat(serverURLparameters), user, password

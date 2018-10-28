@@ -10,14 +10,6 @@ import java.util.logging.Level;
  */
 public final class Factory {
 
-    //TODO: for ease of deployment, these data should be taken from a .properties
-    private static final String serverUrl = "jdbc:mysql://localhost/";
-    private static final String urlSuffix = "?useUnicode=true&useSSL=false&serverTimezone=UTC";
-    private static final String database = "quizzdb";
-    private static final String username = "quizzUser";
-    private static final String password = "quizzeur";
-
-
     private static StorageBackend storage = null;
     private static ThemeRepository themeSource = null;
     private static QuizzRepository quizzSource = null;
@@ -28,7 +20,14 @@ public final class Factory {
     public static StorageBackend getStorageBackend() {
         if (storage == null) {
             try {
-                storage = new StorageBackend(serverUrl, database, urlSuffix, username, password);
+                String  driverClassName = PropertyLoader.getValue("driverClassName"),
+                        serverUrl = PropertyLoader.getValue("serverUrl"),
+                        database = PropertyLoader.getValue("database"),
+                        urlSuffix = PropertyLoader.getValue("urlSuffix"),
+                        username = PropertyLoader.getValue("username"),
+                        password = PropertyLoader.getValue("password");
+
+                storage = new StorageBackend(driverClassName, serverUrl, database, urlSuffix, username, password);
 
             } catch (SQLException | ClassNotFoundException e) {
                 SingleLogger.logger.severe("Cannot Connect to the database:\n");
