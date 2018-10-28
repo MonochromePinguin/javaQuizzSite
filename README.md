@@ -59,7 +59,8 @@ or allowing questions with free-text answers ?
 
 ####Installation:
 **WARNING!**  
- this part is _**under construction. TODO!**_
+ this part is _**under construction. high TODO concentration here.**_  
+ _I know this instruction list is absolutely not detailed enough for a file pretending to be a REAME.md, but it's not the goal here._
 * clone or donwload the sources.
 
 * set up the database:
@@ -72,9 +73,11 @@ or allowing questions with free-text answers ?
     jstp-1.2.jar
     mysql-connector-java-8.0.13.jar
     protobuf-java-3.6.1.jar
+* __TODO__: verify if there are more libraries to copy manualy in case of
+ project compilation on the command-line, with no IDE to automate it.
+* _I apologize for the total lack of following instructions. 'Dont have time to write them.
 * __TODO:__
-  * import .idea: which directories?
   * must other libraries be copied under /lib (eg tomcat libs)?
-  * write instructions for compiling a .war.
+  * write instructions for compiling the sources into .war.
   * perhaps write instructions for deploying this file under the tomcat server?
   
