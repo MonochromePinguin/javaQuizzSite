@@ -18,7 +18,10 @@ public class ThemeRepository {
     private final StorageBackend storage;
     private final QuizzRepository quizzSource;
 
-    // this is a cache for loaded themes
+    //TODO: this is a cache for loaded themes WITHOUT QUIZZ LIST INSIDE. The list of related quizzes can change depending
+    //TODO: the requirements, so to cache these lists we would need a classe storing both the quizzList
+    //TODO: and the parameters to build them. Just add this class!
+    //
     //TODO: beware if the servlet scope is reduced to session or request !
     //TODO: verify it is worth, and it is worth only in case of a long-lasting servlet...
     ///TODO: add a mechanism to swipe the cache content when db is changed!
@@ -38,10 +41,12 @@ public class ThemeRepository {
     public Theme getThemeById(long id, boolean withQuizzList) {
         Theme theme;
 
-        //first, look in the cache
-        theme = this.themeCache.get(id);
-        if (theme != null) {
-            return theme;
+        // in the case of a theme needing no quizzlist, first look in the cache
+        if (!withQuizzList) {
+            theme = this.themeCache.get(id);
+            if (theme != null) {
+                return theme;
+            }
         }
 
         //then, ask the DB
@@ -57,13 +62,14 @@ public class ThemeRepository {
             }
 
             theme = new Theme(
-                    rs.getLong("themeId"),
+                    id,
                     rs.getString("name"),
                     rs.getString("description"),
-                    withQuizzList ?
-                        this.quizzSource.getQuizzesByTheme(theme, false, true )
-                        :  null
+                    null
             );
+            if (withQuizzList) {
+                this.quizzSource.getQuizzesByTheme(theme, false, true);
+            }
 
             this.themeCache.put(id, theme);
 

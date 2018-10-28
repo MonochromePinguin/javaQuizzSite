@@ -57,6 +57,7 @@ public class EntryQuizzServlet extends HttpServlet {
     }
 
 
+    /* Act as a dispatcher between showEntryQuizzSelectionPage() and showQuizzPage */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
@@ -99,7 +100,10 @@ public class EntryQuizzServlet extends HttpServlet {
     }
 
 
-
+    /* show the list of quizzes accessibles for the entry test.
+     This list in influenced by the two constants ACCEPT_ONLY_MCQ and ACCEPT_RANDOM_QUIZZES given as parameters to
+      getThemesAndQuizzes() inside init().
+     */
     protected void showEntryQuizzSelectionPage(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
     {
@@ -124,6 +128,8 @@ public class EntryQuizzServlet extends HttpServlet {
     }
 
 
+    /* show a single quizz in its page */
+    //
     protected void showQuizzPage(HttpServletRequest request, HttpServletResponse response, Quizz quizz)
         throws ServletException, IOException
     {
@@ -140,11 +146,24 @@ public class EntryQuizzServlet extends HttpServlet {
         );
         request.setAttribute(
                 "rawAboutText",
-                ("" + quizz.nbQuestions).concat(" questions. Undefined time to answer them.\n<br>\n" +
-                        "                           <span class=\"about-em\">Good Luck!</span>")
+                ("" + quizz.nbMcqQuestions).concat(" checkbox questions, ")
+                .concat("" + quizz.nbFreeTextQuestions)
+                .concat(" free answer questions. Undefined time to answer them.\n<br>\n" +
+                        "<span class=\"about-em\">Good Luck!</span>")
         );
 
-        request.setAttribute("questionList", quizz.questionList);
+        request.setAttribute("quizz", quizz);
+
+        request.setAttribute("destinationUrl", getServletContext().getContextPath());
+
+        if (quizz.questionList != null && quizz.questionList.size() > 0){
+            request.setAttribute("showSendButton", true);
+        }
+
+        if (quizz.hasProblem == true ) {
+            request.setAttribute("showBackButton", true);
+        }
+
         request.getRequestDispatcher("/WEB-INF/views/quizz.jsp").forward(request, response);
     }
 

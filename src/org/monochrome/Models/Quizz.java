@@ -10,9 +10,15 @@ public class Quizz {
     public String slug;
     public Theme theme;
     public long teacherId;
-    public boolean isMcq;
-    public boolean isRandom;
-    public int nbQuestions;
+    public boolean isMcq;       //does it contains only MCQ, or does it ALLOW questions with free-text answers?
+    public boolean isRandom;    //is the quizz built randomly from a pool of questions ?
+    public int nbQuestions;     //if !isRandom, this is a total count of question, UNRELATED TO DB CONTENT
+
+    //fields non existent in DB:
+    // they are here for information gathering and checking
+    public boolean hasProblem;
+    public int nbMcqQuestions;
+    public int nbFreeTextQuestions;
 
     public List<Question> questionList;
 
@@ -74,6 +80,18 @@ public class Quizz {
 
     public int getNbQuestions() {
         return nbQuestions;
+    }
+
+    public boolean isHasProblem() {
+        return hasProblem;
+    }
+
+    public int getNbMcqQuestions() {
+        return nbMcqQuestions;
+    }
+
+    public int getNbFreeTextQuestions() {
+        return nbFreeTextQuestions;
     }
 
     public List<Question> getQuestionList() { return questionList; }

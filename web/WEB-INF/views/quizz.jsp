@@ -13,7 +13,10 @@ _localy used:
     aboutTitle      page description § title
     rawAboutText    the raw html source for the page description §
 
-    questionList    a list of Question, each of them containing a list of Answer objects
+    quizz           a Quizz object
+
+    destinationUrl  the URL where to send back the POST request
+    showSendButton  do we have to show the Send Button ?
 --%>
 <html lang="en">
 <head>
@@ -29,6 +32,7 @@ _localy used:
     <link rel="stylesheet" href="<%= request.getContextPath()%>/css/buttons.css">
     <link rel="stylesheet" href="<%= request.getContextPath()%>/css/main.css">
     <link rel="stylesheet" href="<%= request.getContextPath()%>/css/list.css">
+    <link rel="stylesheet" href="<%= request.getContextPath()%>/css/inputs.css">
 </head>
 
 <body>
@@ -40,15 +44,29 @@ _localy used:
         </h3>
 
         <div class="about-text">
-            <%--TODO: replace it with serveral escaped-content paragraphs--%>
-            ${rawAboutText}
+             ${quizz.nbMcqQuestions} MCQ, ${quizz.nbFreeTextQuestions} free-response questions.
+        </div>
+
+        <div class="about-text">
+        <%--TODO: replace it with serveral escaped-content paragraphs--%>
+        ${rawAboutText}
         </div>
     </aside>
 
+    <c:if test="${quizz.hasProblem == true}">
+        <aside>
+            <div class="warning">
+                <p class="about-text">BEWARE:</p>
+                <p class="about-text">This quizz have unwanted errors inside it. Please accept our apologies.</p>
+            </div>
+        </aside>
+    </c:if>
+
     <%--list of questions, each containing a list of possible answers--%>
     <main class="border-margin-1rem">
+      <form action="${destinationUrl}" method="post">
 
-        <c:forEach items="${questionList}" var="question">
+        <c:forEach items="${quizz.questionList}" var="question">
 
             <div class="list">
                 <p class="list-title">${fn:escapeXml(question.label)}</p>
@@ -59,7 +77,9 @@ _localy used:
                     <c:forEach items="${question.answerList}" var="answer">
                         <div class="list-item">
                             <label class="list-answer">
-                                <input type="checkbox" value="${answer.answerId}"/>
+                                <%--as the ordre of the questions could change dynamically in a future version,
+                                we stuff both questionId and answerId into the returned value--%>
+                                <input type="checkbox" value="${question.questionId}#${answer.answerId}"/>
                                 ${fn:escapeXml(answer.label)}
                             </label>
                         </div>
@@ -81,7 +101,7 @@ _localy used:
         </c:forEach>
 
         <%--in case of empty question list--%>
-        <c:if test="${empty questionList}">
+        <c:if test="${empty quizz.questionList}">
             <div class="list">
                 <p class="list-title warning">Sorry...</p>
                 <div class="list-about warning">
@@ -92,6 +112,15 @@ _localy used:
             </div>
         </c:if>
 
+        <c:if test="${not empty showSendButton}">
+            <button class="btn btn-primary big">Send answers</button>
+        </c:if>
+
+      </form>
+
+        <c:if test="${not empty showBackButton}">
+            <a class="btn btn-primary big" href="/entryQuizz">Back to the quizz list</a>
+        </c:if>
     </main>
 
 </body>

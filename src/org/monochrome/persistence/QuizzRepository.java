@@ -71,9 +71,9 @@ public class QuizzRepository {
     /**
      *  HELPER FUNCTION – build a Quizz from data extracted *from the 1st row* of the ResultSet
      * @param rs                            the ResultSet filled by the calling method
-     * @param withFullData                  do we need to stuff object' fields with the row data?
-     *                                        Without it, themeId, teacherId, isMcq, isRandom, nbQuestions are left out
-     * @param withQuestionsAndAnswers       do we need to include full
+     * @param withFullData                  do we need to stuff object' fields with all rows data?
+     *                                        theme, teacherId, nbQuestions are affected by this boolean
+     * @param withQuestionsAndAnswers       do we need to include full Question list?
      * @return Quizz or null
      */
     protected Quizz buildQuizz(ResultSet rs, boolean withFullData, boolean withQuestionsAndAnswers) {
@@ -98,12 +98,13 @@ public class QuizzRepository {
             quizz.teacherId = withFullData ? rs.getLong("teacherId") : 0;
             quizz.nbQuestions = (withFullData || (withQuestionsAndAnswers && quizz.isRandom)) ?
                                     rs.getInt("nbQuestions") : 0;
-            quizz.questionList = withQuestionsAndAnswers ?
-                    this.questionSource.getQuestionsByQuizzId(
-                            quizz.quizzId,
-                            true,
-                            quizz.isRandom ? quizz.nbQuestions : 0 )
-                    :  null;
+            if (withQuestionsAndAnswers) {
+                this.questionSource.stuffQuestionListAndDataInsideQuizz(quizz, true);
+            } else {
+                quizz.nbMcqQuestions =
+                quizz.nbFreeTextQuestions = 0;
+                quizz.questionList = null;
+            }
 
             if (withFullData && !quizz.isRandom && quizz.questionList != null) {
                 quizz.nbQuestions = quizz.questionList.size();

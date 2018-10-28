@@ -1,30 +1,46 @@
-_ quizz servlet:
-    add nbQuestions and isMCQ fields, and « isRandom » only in case of admin-logged,
-    add teacherId.name, and also a « last Modified Date »
-
-_ quizz servlet: 2 booleans → 4 combinations:
-	isMCQ:                pure MCQ /allow free-text answers 
-    isRandom/nbQuestions: determined quizz / randomly-generated quizz with 𝑛 questions
-
-_ quizz servlet:
-    use slugs in the URL as well as numeric id for routing
-_  quizz servlet:
+• entry-quizz servlet:
     in case of inscription MCQ :
-	Cadd logic to decide if the user can go to the next step :
-		account creation and inscription
+	Cadd logic to decide if the user can go to the next step, « account creation and inscription ».
 _ add account creation/inscription page
 _ add logging page
-_ account creation page:
+
+• all-quizz servlet:
+    _ when the user is logged as teacher, show info fields :
+        nbQuestions, nbMCQ, nbFreeText, isMCQ-only, isRandom, creator.name
+        _ add also a « last Modified Date » in the Quizz object
+    _ when user logged in as student :
+        last Modified date
+    _ add sort criterias, at least Quizz name/ creation date / creator in the JSP, first through HTML then JS
+
+• verify randomly-created quizzes are correctly generated – not cached "as it".
+
+• ordering of questions:
+    in inter_question_quizz, add question's weight for ordering
+
+• add home / quizz ordered by theme /theme list / etc. buttons on the nav-bar
+
+• Quizz object:
+    _ add « public boolean hasError;   //an error flag set to 1 if a question of the quizz lacks reponse or, if the quizz
+         is randomly build, the needed question quantity is not met »
+      → quizz is shown with an error message and greyed ;
+      → the quizz page is innacessible
+        → validateQuizz() function testing coherency : Qty of questions, presence of answers
+    _ add also a lastEdited field that will also be edited.
+
+• quizz servlet: 2 booleans → 4 combinations:
+	isMCQ:                pure MCQ /allow free-text answers 
+    isRandom/nbQuestions: determined quizz / randomly-generated quizz with 𝑛 questions
+_ add test display of free-text questions
+
+• account creation page:
     add email validation link, arbitrary link stored in DB
         for a small, property-configurable validity time
 _ add password reset page and logic (reset links, time-limited validity, ...)
 _ add « contact Us / leave a message » page
-_ quizz list JSP:
-    _ add sort criteria (noJS, then JS; see festiZik): at least name and edit date
-    _ add quizz quality (random/fix, MCQ/with free text answers, last edit date) and question number display
 _ admin pages:
     list/remove/renames/add/modify quizzes
-_ header/a13y : buttons for changing font-size.
+
+• header/a13y : buttons for changing font-size.
     without JS : links to /font-size-${current-font-size}-bigger/${currentURL}
                     and /font-size-${current-font-size}-smaller/${currentURL},
     handled by a servlet which also handle creation of a custom «font-size.css »
@@ -33,14 +49,15 @@ _ header/a13y : buttons for changing font-size.
             font-size: <%= fontSize %>
         }
 → all sizes in main.css are in *rem* ...
-_ quizz list JSP:
+
+• quizz list JSP:
     add SVG icons on warning messages and perhaps other places
 
-_ admin pages:
+• admin pages:
     retrieving leaved messages,
     adding/removing students, teachers
 
-_security:
+• security:
     _care about ${rawAboutText} and possible vulnerabilities
 
 _ DB creation script: add triggers for MySQL

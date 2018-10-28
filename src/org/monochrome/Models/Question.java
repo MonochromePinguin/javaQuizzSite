@@ -28,7 +28,7 @@ public class Question {
         return label;
     }
 
-    public boolean isMCQ() {
+    public boolean getIsMCQ() {
         return isMCQ;
     }
 
