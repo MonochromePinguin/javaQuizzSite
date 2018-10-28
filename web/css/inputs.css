@@ -1,0 +1,25 @@
+
+/* for answer checkboxes */
+.list-answer {
+    font-style: italic;
+}
+.list-answer > input {
+    transform: scale(1.5);
+}
+
+
+input:focus {
+    animation: 0.8s ease-out infinite alternate both glow;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 1px 1px 1px lightgreen, -1px 1px 1px lightgreen,
+        1px -1px 1px lightgreen, -1px -1px 1px lightgreen;
+    }
+    to
+    {
+        box-shadow: 1px 1px 0.7em lightgreen, -1px 1px 0.7em lightgreen,
+        1px -1px 0.7em lightgreen, -1px -1px 0.7em lightgreen;
+    }
+}

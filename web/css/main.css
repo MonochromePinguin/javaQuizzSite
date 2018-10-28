@@ -38,7 +38,6 @@ table {
 }
 
 
-
 /* TODO: these font-size and color variables setting will be externalized
   to their own servlet-handled CSS file for a11y reasons */
 html {
@@ -48,13 +47,18 @@ html {
     background: #e4ffff;
 }
 
-:root{
+
+:root {
     --col-bg1: lightblue;
     --col-1: darkblue;
 
     --col-intro: darkcyan;
     --col-title: aquamarine;
 }
+
+
+aside { margin-bottom: 2rem; }
+
 
 /* reusable classes */
 /**/

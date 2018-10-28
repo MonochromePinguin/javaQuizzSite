@@ -96,17 +96,6 @@ and in small screen width (arbitrarily <600px):
 }
 
 
-
-/* for answer checkboxes */
-.list-answer {
-    font-style: italic;
-}
-.list-answer > input {
-    transform: scale(1.5);
-}
-
-
-
 @media all and (min-width: 600px) {
     .list-title,
     .list-about { text-align: left }
