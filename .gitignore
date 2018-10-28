@@ -1,4 +1,9 @@
 .idea/
+
+#in case of future inclusion of .idea/
+.idea/dataSources
+.idea/dataSources*
+.idea/workspace.xml
+
 out/
 *.iml
-

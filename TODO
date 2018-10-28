@@ -9,10 +9,12 @@ _ add logging page
         nbQuestions, nbMCQ, nbFreeText, isMCQ-only, isRandom, creator.name
         _ add also a « last Modified Date » in the Quizz object
     _ when user logged in as student :
-        last Modified date
-    _ add sort criterias, at least Quizz name/ creation date / creator in the JSP, first through HTML then JS
+        show last Modified date
+    _ add sort criterias, at least Quizz name / creation date / creator in the JSP, first through HTML then JS
+    _ coherency checks: if a question has no answers given, a quizz has no question, or if a randomly generated quizz
+        has not enough questions, send a warning message to the quizz creator.
 
-• verify randomly-created quizzes are correctly generated – not cached "as it".
+• verify randomly-created quizzes are correctly generated – and absolutely not cached "as it".
 
 • ordering of questions:
     in inter_question_quizz, add question's weight for ordering
@@ -20,17 +22,10 @@ _ add logging page
 • add home / quizz ordered by theme /theme list / etc. buttons on the nav-bar
 
 • Quizz object:
-    _ add « public boolean hasError;   //an error flag set to 1 if a question of the quizz lacks reponse or, if the quizz
-         is randomly build, the needed question quantity is not met »
-      → quizz is shown with an error message and greyed ;
-      → the quizz page is innacessible
-        → validateQuizz() function testing coherency : Qty of questions, presence of answers
     _ add also a lastEdited field that will also be edited.
 
 • quizz servlet: 2 booleans → 4 combinations:
-	isMCQ:                pure MCQ /allow free-text answers 
-    isRandom/nbQuestions: determined quizz / randomly-generated quizz with 𝑛 questions
-_ add test display of free-text questions
+    _ add test display of free-text questions
 
 • account creation page:
     add email validation link, arbitrary link stored in DB
@@ -66,8 +61,8 @@ _ db creation script: write a function to use in the check (and the trigger)
     of « answers » table: it will verify that question(questionId).isQCM == true
 
 _ write DB filling script – realistic data
-_ write the README.md and its simple howto for ubuntu
-_ write use-cases
+_ finish writing the README.md (with a simple howto for ubuntu inside)
+
 _ DB creation script: add checks for several relations :
 	_ there must exists at least two responses to each MCQ question,
     _ when the quizz is randomly built, there must exists at least  "nbQuestions" questions of same theme as the quizz else the deletion of any of these questions will fail

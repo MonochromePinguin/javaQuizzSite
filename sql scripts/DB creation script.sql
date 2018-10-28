@@ -6,7 +6,7 @@ _ (not registered), can have the MCQ test
 _ ASKER:     registered for mail exchanges only
 _ REGISTERED: have passed the MCQ, enrolled as student
 _ STUDENT1, 1st part, can pass full tests to get higher grade
-_ STUDENT2, has passed all mid-cursus full tests from all its cursus
+_ STUDENT2, has passed all mid-course full tests from all its courses
 _ FLUNK, had lamentably failed at some point
 */
 create table if not exists studentStatus(

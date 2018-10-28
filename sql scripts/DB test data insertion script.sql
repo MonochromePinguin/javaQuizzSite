@@ -2,9 +2,9 @@
 
 INSERT INTO quizzdb.studentStatus (statusId, name, description) VALUES (1, 'asker', 'registered for mail exchanges – not a student');
 INSERT INTO quizzdb.studentStatus (statusId, name, description) VALUES (2, 'registered', 'had success with the two MCQ, now registered as STUDENT');
-INSERT INTO quizzdb.studentStatus (statusId, name, description) VALUES (3, 'student1', 'student, 1st part cursus, can pass mid-cursus tests to get higher grade');
-INSERT INTO quizzdb.studentStatus (statusId, name, description) VALUES (4, 'student2', 'student, 2nd part cursus, had her mid-cursus test');
-INSERT INTO quizzdb.studentStatus (statusId, name, description) VALUES (5, 'flunk', 'flunk – had lamentably failed mid-cursus test');
+INSERT INTO quizzdb.studentStatus (statusId, name, description) VALUES (3, 'student1', 'student, 1st part course, can pass mid-course tests to get higher grade');
+INSERT INTO quizzdb.studentStatus (statusId, name, description) VALUES (4, 'student2', 'student, 2nd part course, had her mid-course test');
+INSERT INTO quizzdb.studentStatus (statusId, name, description) VALUES (5, 'flunk', 'flunk – had lamentably failed mid-course test');
 
 
 INSERT INTO quizzdb.students (studentId, firstName, lastName, birthDate, email, pseudo, statusId) VALUES (4, 'student1', 'stud', '2000-10-10', 'student1@yopmail.net', '', 2);
