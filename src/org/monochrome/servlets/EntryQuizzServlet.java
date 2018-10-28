@@ -19,10 +19,10 @@ TODO: create a mechanism of data discarding when the DB is updated through our a
 
 
 import com.mysql.cj.util.StringUtils;
-import org.monochrome.Models.Question;
-import org.monochrome.Models.Quizz;
-import org.monochrome.Models.Theme;
+import org.monochrome.models.Quizz;
+import org.monochrome.models.Theme;
 import org.monochrome.persistence.QuizzRepository;
+import org.monochrome.services.CorrectorResult;
 import org.monochrome.services.CorrectorService;
 import org.monochrome.services.Factory;
 import org.monochrome.services.SingleLogger;
@@ -33,8 +33,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
 
 @WebServlet
 public class EntryQuizzServlet extends HttpServlet {
@@ -48,6 +46,7 @@ public class EntryQuizzServlet extends HttpServlet {
     public static final boolean ACCEPT_RANDOM_QUIZZES = false;
 
 
+
     @Override
     public void init(){
         SingleLogger.logger.info("● EntryQuizzServlet.init() called");
@@ -57,7 +56,12 @@ public class EntryQuizzServlet extends HttpServlet {
     }
 
 
-    /* Act as a dispatcher between showEntryQuizzSelectionPage() and showQuizzPage */
+
+    /* Act as a dispatcher between showEntryQuizzSelectionPage() / showQuizzPage() methods :
+        ${SERVLETPATH}/     →   showEntryQuizzSelectionPage
+        ${SERVLETPATH}/\n+  →   show quizz page – quizz selected by id
+        ${SERVLETPATH}/\a+  →   show quizz page – quizz seleted by slug
+    */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
@@ -70,34 +74,85 @@ public class EntryQuizzServlet extends HttpServlet {
             return;
         }
 
-        quizzPattern = quizzPattern.substring(1);
+        //get the quizz corresponding to the given URL portion
+        quizz = this.getQuizzForSubpath(quizzPattern.substring(1));
 
-        //is this a route to a Quizz by its quizzId?
-        if (StringUtils.isStrictlyNumeric(quizzPattern)) {
-            try {
-                long quizzId = Long.parseLong(quizzPattern);
-                quizz = this.quizzRepository.getQuizzById(quizzId, true, true);
-
-                //quizz found by id
-                if (quizz != null) {
-                    this.showQuizzPage(request, response, quizz);
-                    return;
-                }
-
-            } catch (NumberFormatException e) {}    //do nothing in case of conversion error, just go to the next step
-
-        }
-
-        //is this a route to a quizz by its slug?
-        quizz = this.quizzRepository.getQuizzBySlug(quizzPattern, true, true);
         if (quizz != null) {
-            this.showQuizzPage(request, response, quizz );
+            this.showQuizzPage(request, response, quizz);
             return;
         }
 
         //no quizz found – redirect to the 404 page
         response.sendRedirect("/page-not-found");
     }
+
+
+
+    /** handle POST to quizz-associed URL (by id or by slug) :
+     * _ if pure-MCQ quizz (quizz.nbFreeTextQuestion == 0), correct it automatically by calling CorrectorService.correct()
+     * _ if the quizz contains free-answer questions, store all questions into the DB for future correction
+          by a teacher
+     **/
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        //get the URL part AFTER the part attribued to the servlet (eg http://host/servletName/lastPart → « /lastPart »)
+        String quizzPattern = request.getPathInfo();
+        Quizz quizz;
+
+        //get the quizz corresponding to the given URL portion
+        quizz = getQuizzForSubpath(quizzPattern.substring(1));
+
+        if (quizz == null) {
+            // empty subpath, bad URL or no quizz found – redirect to the 404 page
+            response.sendRedirect("/page-not-found");
+        }
+
+        if (quizz.isMcq || quizz.nbFreeTextQuestions == 0) {
+            CorrectorResult correctionResult = CorrectorService.correctMcqResponses(quizz, request, false);
+
+            //null returned: the asked quizz has incoherency inside!
+            if (correctionResult == null) {
+                this.showQuizzIncoherencyPage(request, response, quizz);
+            }
+
+            if (correctionResult.passed) {
+                this.showCongratulationPage(request, response, quizz, correctionResult);
+            } else {
+                this.showQuizzNotPassedPage(request, response, quizz, correctionResult);
+            }
+        }
+    }
+
+
+
+    /** return the Quizz associated to the given subpath, either a numeric id, or an alphanumeric slug.
+     *      slugs cannot be full-numeric.
+     * @return Quizz, or null if none found
+     */
+    protected Quizz getQuizzForSubpath(String subpath) {
+        Quizz quizz = null;
+
+        //is this subpath a route to a Quizz by its quizzId?
+        if (StringUtils.isStrictlyNumeric(subpath)) {
+            try {
+                long quizzId = Long.parseLong(subpath);
+                quizz = this.quizzRepository.getQuizzById(quizzId, true, true);
+
+            } catch (NumberFormatException e) {
+                //do nothing in case of conversion error, just return null
+                return null;
+            }
+
+        } else {
+
+            //is this a route to a quizz by its slug?
+            quizz = this.quizzRepository.getQuizzBySlug(subpath, true, true);
+        }
+
+        return quizz;
+    }
+
 
 
     /* show the list of quizzes accessibles for the entry test.
@@ -128,6 +183,7 @@ public class EntryQuizzServlet extends HttpServlet {
     }
 
 
+
     /* show a single quizz in its page */
     //
     protected void showQuizzPage(HttpServletRequest request, HttpServletResponse response, Quizz quizz)
@@ -156,15 +212,72 @@ public class EntryQuizzServlet extends HttpServlet {
 
         request.setAttribute("destinationUrl", getServletContext().getContextPath());
 
-        if (quizz.questionList != null && quizz.questionList.size() > 0){
-            request.setAttribute("showSendButton", true);
-        }
+        request.setAttribute("showSendButton", true);
 
         if (quizz.hasProblem == true ) {
             request.setAttribute("showBackButton", true);
         }
 
         request.getRequestDispatcher("/WEB-INF/views/quizz.jsp").forward(request, response);
+    }
+
+
+
+    protected void showCongratulationPage(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Quizz quizz,
+            CorrectorResult correction
+    )
+            throws ServletException, IOException
+    {
+        request.setAttribute("titleIntro", "Oh, Joy!" );
+        request.setAttribute("title", "You passed the quizz");
+
+        request.setAttribute("quizzName", quizz.name);
+        request.setAttribute("successPercentage", correction.successPercentage );
+
+        request.getRequestDispatcher("/WEB-INF/views/entryQuizzPassed.jsp").forward(request, response);
+    }
+
+
+
+    protected void showQuizzNotPassedPage(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Quizz quizz,
+            CorrectorResult correction
+    )
+            throws ServletException, IOException
+    {
+
+        request.setAttribute("title", "You can do better!");
+        request.setAttribute("subtitle", "you did not pass the quizz");
+
+
+        request.setAttribute("quizzName", quizz.name);
+        request.setAttribute("successPercentage", correction.successPercentage );
+        request.setAttribute("winMinPercentage", CorrectorService.winMinPercentage);
+
+
+        request.getRequestDispatcher("/WEB-INF/views/quizzFailure.jsp").forward(request, response);
+    }
+
+
+
+    protected void showQuizzIncoherencyPage(HttpServletRequest request, HttpServletResponse response, Quizz quizz)
+            throws ServletException, IOException
+    {
+        request.setAttribute("titleIntro", "Were're sorry..." );
+        request.setAttribute("title", "incoherency have been detected inside the quizz");
+        request.setAttribute(
+                "subtitle",
+                "It is thus impossible to correct your answers to the « ".concat(quizz.name).concat(" » quizz")
+        );
+
+        request.setAttribute("goBackUrl", "/entryQuizz");
+
+        request.getRequestDispatcher("/WEB-INF/views/quizzIncoherencyDetected.jsp").forward(request, response);
     }
 
 }

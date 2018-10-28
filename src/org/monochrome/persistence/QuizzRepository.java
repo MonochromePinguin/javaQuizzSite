@@ -1,7 +1,7 @@
 package org.monochrome.persistence;
 
-import org.monochrome.Models.Quizz;
-import org.monochrome.Models.Theme;
+import org.monochrome.models.Quizz;
+import org.monochrome.models.Theme;
 import org.monochrome.services.Factory;
 import org.monochrome.services.SingleLogger;
 

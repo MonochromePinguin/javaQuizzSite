@@ -1,6 +1,6 @@
 package org.monochrome.persistence;
 
-import org.monochrome.Models.Theme;
+import org.monochrome.models.Theme;
 import org.monochrome.services.SingleLogger;
 
 import java.sql.PreparedStatement;

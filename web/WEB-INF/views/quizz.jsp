@@ -17,6 +17,7 @@ _localy used:
 
     destinationUrl  the URL where to send back the POST request
     showSendButton  do we have to show the Send Button ?
+    showBackButton  ...
 --%>
 <html lang="en">
 <head>
@@ -44,10 +45,6 @@ _localy used:
         </h3>
 
         <div class="about-text">
-             ${quizz.nbMcqQuestions} MCQ, ${quizz.nbFreeTextQuestions} free-response questions.
-        </div>
-
-        <div class="about-text">
         <%--TODO: replace it with serveral escaped-content paragraphs--%>
         ${rawAboutText}
         </div>
@@ -69,31 +66,45 @@ _localy used:
         <c:forEach items="${quizz.questionList}" var="question">
 
             <div class="list">
-                <p class="list-title">${fn:escapeXml(question.label)}</p>
+                <p class="list-title">
+                    ${fn:escapeXml(question.label)}
+                </p>
 
                 <div class="list-container">
 
-                    <%--inner question-list loop--%>
-                    <c:forEach items="${question.answerList}" var="answer">
-                        <div class="list-item">
-                            <label class="list-answer">
-                                <%--as the ordre of the questions could change dynamically in a future version,
-                                we stuff both questionId and answerId into the returned value--%>
-                                <input type="checkbox" value="${question.questionId}#${answer.answerId}"/>
-                                ${fn:escapeXml(answer.label)}
-                            </label>
-                        </div>
-                    </c:forEach>
-
-                    <%--in case of empty answers list--%>
-                    <c:if test="${empty question.answerList}">
-                        <div class="warning list-item ">
-                            <p>
-                                This question has no answer? What's The Bug!?
-                            </p>
-                        </div> <%--div.warning.list-item--%>
-
+                    <%--for "free-text answer" questions--%>
+                    <c:if test="${question.isMCQ eq false}">
+                        <label class="list-answer">
+                            Write your answer here:
+                            <textarea name="text-${question.questionId}" placeholder="free text answer"></textarea>
+                        </label>
                     </c:if>
+
+                    <%--for MCQ questions--%>
+                    <c:if test="${question.isMCQ == true}">
+
+                        <%--inner question-list loop--%>
+                        <c:forEach items="${question.answerList}" var="answer">
+                            <div class="list-item">
+                                <label class="list-answer">
+                                    <%--each proposed Answer is simply identified by its Id...--%>
+                                    <input type="checkbox" name="${answer.answerId}"/>
+                                    ${fn:escapeXml(answer.label)}
+                                </label>
+                            </div>
+                        </c:forEach>
+
+                        <%--in case of empty answers list--%>
+                        <c:if test="${empty question.answerList}">
+                            <div class="warning list-item ">
+                                <p>
+                                    This question has no answer? What's The Bug!?
+                                </p>
+                            </div> <%--div.warning.list-item--%>
+
+                        </c:if><%--if test="${empty question.answerList}" --%>
+                    </c:if> <%-- if test="question.isMCQ" --%>
+
 
                 </div> <%--div.list-container--%>
             </div> <%--div.list--%>
@@ -112,11 +123,20 @@ _localy used:
             </div>
         </c:if>
 
+        <c:if test="${quizz.hasProblem}">
+          <div class="warning">
+              Incoherencies have been detected inside this quizz – you should not try to send it back.
+              <br>
+              You've been warned!
+          </div>
+        </c:if>
+
         <c:if test="${not empty showSendButton}">
             <button class="btn btn-primary big">Send answers</button>
         </c:if>
 
       </form>
+
 
         <c:if test="${not empty showBackButton}">
             <a class="btn btn-primary big" href="/entryQuizz">Back to the quizz list</a>

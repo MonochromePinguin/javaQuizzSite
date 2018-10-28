@@ -1,7 +1,6 @@
-package org.monochrome.Models;
+package org.monochrome.models;
 
 import java.util.List;
-import java.util.Map;
 
 //PUBLIC FIELDS: BAD PRACTICE, BUT EASY FOR THESE SIMPLE OBJECTS
 public class Quizz {
@@ -82,9 +81,7 @@ public class Quizz {
         return nbQuestions;
     }
 
-    public boolean isHasProblem() {
-        return hasProblem;
-    }
+    public boolean getHasProblem() {return hasProblem; }
 
     public int getNbMcqQuestions() {
         return nbMcqQuestions;

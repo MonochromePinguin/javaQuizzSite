@@ -1,7 +1,7 @@
 package org.monochrome.persistence;
 
-import org.monochrome.Models.Question;
-import org.monochrome.Models.Quizz;
+import org.monochrome.models.Question;
+import org.monochrome.models.Quizz;
 import org.monochrome.services.SingleLogger;
 
 import java.sql.PreparedStatement;
@@ -146,8 +146,7 @@ public class QuestionRepository {
                     ++nbFreeTextQuestions;
                 }
 
-                //less than 2 possible answers for a MCQ : the question has a problem. signal it into the quizz.
-                if  (withAnswers && isMCQ && question.answerList == null || question.answerList.size() < 2 ) {
+                if  (withAnswers && isMCQ && question.answerList == null || question.answerList.size() == 0 ) {
                     quizz.hasProblem = true;
                 }
             }
@@ -160,10 +159,9 @@ public class QuestionRepository {
                 // set the retrieved question count.
                 quizz.nbQuestions = quizz.nbMcqQuestions + quizz.nbFreeTextQuestions;
             }
+            //randomly-build quizz: verify there is the right count of questions to send back.
             else if (quizz.nbQuestions != quizz.questionList.size()) {
-                //randomly-build quizz:
                 //quizz.nbQuestions is left unchanged, because it told us how many questions to load.
-                //Just verify there is enough questions sent back.
                 quizz.hasProblem = true;
             }
 

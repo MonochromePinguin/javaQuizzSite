@@ -1,4 +1,4 @@
-package org.monochrome.Models;
+package org.monochrome.models;
 
 public class Answer {
     public long answerId;

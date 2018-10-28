@@ -1,6 +1,12 @@
-• entry-quizz servlet:
-    in case of inscription MCQ :
-	Cadd logic to decide if the user can go to the next step, « account creation and inscription ».
+• entryQuizzPassed.jsp :
+    _add link to a quizz.jsp with corrections added
+    _add link to the **subscription page**
+eventually make it usable for all quizz exams
+
+• quizz.jsp :
+    add markers and test to show corrections into this page.
+
+
 _ add account creation/inscription page
 _ add logging page
 

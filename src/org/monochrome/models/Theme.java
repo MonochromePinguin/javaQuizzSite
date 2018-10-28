@@ -1,11 +1,6 @@
-package org.monochrome.Models;
+package org.monochrome.models;
 
 /* This POJO represent a quizz theme and its related quizzes */
-
-import org.monochrome.Models.Quizz;
-
-import java.util.HashMap;
-import java.util.Map;
 
 //PUBLIC FIELDS: BAD PRACTICE, BUT EASY FOR THESE SIMPLE OBJECTS
 public class Theme {
