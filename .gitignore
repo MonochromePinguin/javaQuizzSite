@@ -1,4 +1,5 @@
 .idea/
+src/app.properties
 
 #in case of future inclusion of .idea/
 .idea/dataSources

@@ -6,6 +6,7 @@ This app offers a basic site (no complicated CSS styling required) allowing visi
 The quizzes and themes an user can see vary depending on several parameters (notable the user's status), actually hardcoded in some classes.
 
 
+
 ###these quizzes are categorizes on several criterias:
 * their theme
 
@@ -13,6 +14,7 @@ The quizzes and themes an user can see vary depending on several parameters (not
 or allowing questions with free-text answers ?
 
 * constitued of a determined set of questions, or randomly build of a specified amount of questions picked from a pool of questions sharing a specific theme?
+
 
 
 ###some scarse technical details (let you just parse the code!):
@@ -50,6 +52,19 @@ or allowing questions with free-text answers ?
            ↑ JSP pages are stored here
 ```
 
+- *web site structure:*
+**TODO:** add links – complete the graph
+````
+main page
+|__candidate: quizz selection page
+        |__ quizz page
+                |__ quizz incoherency page
+                |__ fail page
+                |__ success page
+                        |__ register page    
+````
+
+
 
 ### how to install and use this app:
 #### prerequites:
@@ -67,7 +82,7 @@ or allowing questions with free-text answers ?
    * either source into your mysql client the script **DB creation script.sql**, if you want an empty database,  
  or create a empty database, and then populate it by sourcing the sql script **DB test data insertion script.sql** which will create and fill the tables.
     * eventually add an user to the database and give them the needed access rights on the created database.
-    * modify the file src/org/monochrome/config/app.properties to reflect your configuration.
+    * create from the example file **src/org/monochrome/config/app.properties.template** an **app.properties** file in the same folder and edit it to reflect your configuration.
 
 * copy under the _**lib/**_ folder these dependencies:  
     jstp-1.2.jar

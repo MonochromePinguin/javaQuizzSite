@@ -1,0 +1,6 @@
+driverClassName=com.mysql.cj.jdbc.Driver
+serverUrl= # URL of the DB. by example, for a DB on your host: jdbc:mysql://localhost/
+urlSuffix= # eventual a query string to be appended at the URL end: ?useUnicode=true&useSSL=false&serverTimezone=UTC
+database= # DB name
+username= # MySQL user
+password= # MySQL user's password
