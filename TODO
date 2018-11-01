@@ -1,3 +1,7 @@
+• addition of password hases into the tables students and teachers:
+     update students set passwordHash = unhex( sha2(pseudo, 512) ) where pseudo is not null
+→ le MdP est le pseudo ...
+
 • entryQuizzPassed.jsp :
     _add link to a quizz.jsp with corrections added
     _add link to the **subscription page**
@@ -6,6 +10,8 @@ eventually make it usable for all quizz exams
 • quizz.jsp :
     add markers and test to show corrections into this page.
 
+• move hard-coded constants (CorrectorService.winMinPercentage, by ex.) to a loadable properties file.
+→ several .properties files? Try to put them inside «resources»?
 
 _ add account creation/inscription page
 _ add logging page

@@ -22,7 +22,8 @@ create table if not exists studentStatus(
 
 # used for students, wannabe students, and peoples giving emails for being answered
 create table if not exists students(
-    studentId    int unsigned  auto_increment not null,
+    studentId          int unsigned  auto_increment not null,
+    registrationDate   datetime default CURRENT_TIMESTAMP,
     firstName    nchar(64) not null,
     lastName     nchar(64) not null,
     
@@ -32,6 +33,8 @@ create table if not exists students(
     email        nvarchar(128) not null,
     pseudo       nvarchar(64)
         comment 'used to discriminate between users with same firstName/lastName/birthDate, optional only for the contact page',
+    passwordHash  binary(64)
+        comment 'optional only for unregistered people',
     
     statusId     int unsigned not null,
 
@@ -54,9 +57,13 @@ create table if not exists teachers(
     birthDate   date not null,
     
     email       nvarchar(128) not null,
+    pseudo       nvarchar(64)  not null
+        comment 'used for login',
+    passwordHash  binary(64)  not null,
 
     constraint pk_teacherId primary key(teacherId),
     constraint uq_email unique(email),
+    constraint uq_pseudo unique(pseudo),
     constraint uq_names_birth_pseudo unique(firstName, lastName, birthDate, email)
 );
 
@@ -113,7 +120,10 @@ create table if not exists quizzes(
     
     teacherId     int unsigned not null
         comment 'for now, this is the quizz''s creator, and the creator is also the only corrector – in the future, we can add an intermedary table if we want more correctors',
- 
+
+    lastEditDate  datetime default CURRENT_TIMESTAMP
+        comment 'beware of time-zone settings: a DATETIME does not record timezone, and so the best is to set MySQL to use UTC!',
+
     isMCQ         boolean not null default true
         comment 'if true, the quizz contains only MCQ, and can be automatically corrected; if false, it contains (or can contains in case of randomly-generated quizz) free-text answers, and cannot be automatically corrected',
     isRandom      boolean not null
@@ -151,10 +161,10 @@ this table records each submission waiting for a correction
 create table if not exists resultSubmissions(
     resultSubmissionId    int unsigned  auto_increment not null
         comment 'the DB do not forbid a student to have several time the same quizz, so we do not use a compound primary key (studentId, quizzId)',
-    studentId             int unsigned not null,
-    quizzId               int unsigned not null,
-    submissionDateTime    datetime not null default current_timestamp
-        comment 'date and time the student submit his answers',
+    studentId             int unsigned  not null,
+    quizzId               int unsigned  not null,
+    submissionDateTime    datetime  not null default current_timestamp
+        comment 'date and time the student submit his answers – beware that datetime do not record timezone information!',
 
     constraint pk_resultSubmissionId  primary key(resultSubmissionId),
     constraint fk_studentId foreign key(studentId) references students(studentId)
@@ -178,4 +188,32 @@ create table if not exists resultProposal(
         on delete restrict,
 
     constraint pk_resultSubmissionId_questionId primary key(resultSubmissionId, questionId)
+);
+
+
+# links (confirm inscription link, password reset link, ...) will be time-limited – and all stored temporarily in DB
+CREATE TABLE IF NOT EXISTS linkTypes(
+    linkTypeId      int unsigned  not null,
+    name            nchar(16)  not null,
+    description       nvarchar(255),
+    validityinMinutes smallint unsigned  not null
+        comment 'each link expire after a determined time since its creation',
+
+    constraint pk_linkTypeId primary key(linkTypeId),
+    constraint uq_name unique(name)
+);
+
+
+CREATE TABLE IF NOT EXISTS links(
+    linkId            int unsigned not null,
+    slug              nvarchar(128) not null
+        comment "the slug to use in the URL under the prefix of the controller handling it",
+
+    linkTypeId        int unsigned not null,
+    creationDatetime  datetime default CURRENT_TIMESTAMP
+        comment 'see linkTypes.validityInMinutes for the use of this column...',
+
+    constraint pk_linkId primary key(linkId),
+    constraint fk_linkTypeId foreign key(linkTypeId) references linkTypes(linkTypeId)
+      on delete restrict
 );

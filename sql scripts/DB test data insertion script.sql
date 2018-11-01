@@ -71,6 +71,59 @@ INSERT INTO `inter_questions_quizzes` VALUES (14,10),(16,10),(17,10),(18,10),(19
 UNLOCK TABLES;
 
 --
+-- Table structure for table `linkTypes`
+--
+
+DROP TABLE IF EXISTS `linkTypes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `linkTypes` (
+  `linkTypeId` int(10) unsigned NOT NULL,
+  `name` char(16) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `validityinMinutes` smallint(5) unsigned NOT NULL COMMENT 'each link expire after a determined time since its creation',
+  PRIMARY KEY (`linkTypeId`),
+  UNIQUE KEY `uq_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `linkTypes`
+--
+
+LOCK TABLES `linkTypes` WRITE;
+/*!40000 ALTER TABLE `linkTypes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `linkTypes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `links`
+--
+
+DROP TABLE IF EXISTS `links`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `links` (
+  `linkId` int(10) unsigned NOT NULL,
+  `slug` varchar(128) NOT NULL COMMENT 'the slug to use in the URL under the prefix of the controller handling it',
+  `linkTypeId` int(10) unsigned NOT NULL,
+  `creationDatetime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'see linkTypes.validityInMinutes for the use of this column...',
+  PRIMARY KEY (`linkId`),
+  KEY `fk_linkTypeId` (`linkTypeId`),
+  CONSTRAINT `fk_linkTypeId` FOREIGN KEY (`linkTypeId`) REFERENCES `linkTypes` (`linkTypeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `links`
+--
+
+LOCK TABLES `links` WRITE;
+/*!40000 ALTER TABLE `links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `links` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `questions`
 --
 
@@ -111,6 +164,7 @@ CREATE TABLE `quizzes` (
   `slug` varchar(128) NOT NULL COMMENT 'the slug to use in the URL',
   `themeId` int(10) unsigned NOT NULL,
   `teacherId` int(10) unsigned NOT NULL COMMENT 'for now, this is the quizz''s creator, and the creator is also the only corrector ‚Äì in the future, we can add an intermedary table if we want more correctors',
+  `lastEditDate` datetime DEFAULT CURRENT_TIMESTAMP,
   `isMCQ` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'if true, the quizz contains only MCQ, and can be automatically corrected; if false, it contains (or can contains in case of randomly-generated quizz) free-text answers, and cannot be automatically corrected',
   `isRandom` tinyint(1) NOT NULL COMMENT 'if true, the quizz is made from random questions pulled from a pool, and the following column is valid',
   `nbQuestions` int(10) unsigned DEFAULT NULL,
@@ -130,7 +184,7 @@ CREATE TABLE `quizzes` (
 
 LOCK TABLES `quizzes` WRITE;
 /*!40000 ALTER TABLE `quizzes` DISABLE KEYS */;
-INSERT INTO `quizzes` VALUES (4,'TEST ‚Äì quizz with no question','test-quizz-no-question-inside',4,1,0,0,NULL),(5,'free-text Quizz #5, theme #4, random','quizz-5',4,1,0,1,5),(7,'small BASH Quizz (5 random questions)','small-bash-quizz-5',1,1,1,1,5),(8,'small BASH Quizz (10 random questions, free-text)','small-bash-quizz-10',1,2,0,1,10),(10,'linux command-line tools','linux-tools',2,3,1,0,NULL),(11,'linux command-line tools (8 random questions)','linux-tools-random-8',2,3,0,1,8),(12,'BASH quizz #2 (MCQ)','bash-quizz-2',1,3,1,0,NULL),(14,'TEST ‚Äì Quizz with bad slug, should send to a 404 err page','<test?bad=quizz+slug+>',3,1,1,0,NULL),(15,'TEST - quizz with a question without answer','test-quizz-with-a-question-without-answer',1,2,1,0,NULL),(16,'TEST - quizz with 4 MCQ questions, theme 1','test-4-questions-mcq',1,1,1,0,NULL),(17,'TEST - quizz with 4 random MCQ questions, theme 1','test-4-random-questions-mcq',1,1,1,1,4);
+INSERT INTO `quizzes` VALUES (4,'TEST ‚Äì quizz with no question','test-quizz-no-question-inside',4,1,'2018-11-01 01:03:26',0,0,NULL),(5,'free-text Quizz #5, theme #4, random','quizz-5',4,1,'2018-11-01 01:03:26',0,1,5),(7,'small BASH Quizz (5 random questions)','small-bash-quizz-5',1,1,'2018-11-01 01:03:26',1,1,5),(8,'small BASH Quizz (10 random questions, free-text)','small-bash-quizz-10',1,2,'2018-11-01 01:03:26',0,1,10),(10,'linux command-line tools','linux-tools',2,3,'2018-11-01 01:03:26',1,0,NULL),(11,'linux command-line tools (8 random questions)','linux-tools-random-8',2,3,'2018-11-01 01:03:26',0,1,8),(12,'BASH quizz #2 (MCQ)','bash-quizz-2',1,3,'2018-11-01 01:03:26',1,0,NULL),(14,'TEST ‚Äì Quizz with bad slug, should send to a 404 err page','<test?bad=quizz+slug+>',3,1,'2018-11-01 01:03:26',1,0,NULL),(15,'TEST - quizz with a question without answer','test-quizz-with-a-question-without-answer',1,2,'2018-11-01 01:03:26',1,0,NULL),(16,'TEST - quizz with 4 MCQ questions, theme 1','test-4-questions-mcq',1,1,'2018-11-01 01:03:26',1,0,NULL),(17,'TEST - quizz with 4 random MCQ questions, theme 1','test-4-random-questions-mcq',1,1,'2018-11-01 01:03:26',1,1,4);
 /*!40000 ALTER TABLE `quizzes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -225,11 +279,13 @@ DROP TABLE IF EXISTS `students`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `students` (
   `studentId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `registrationDate` datetime DEFAULT CURRENT_TIMESTAMP,
   `firstName` char(64) NOT NULL,
   `lastName` char(64) NOT NULL,
   `birthDate` date DEFAULT NULL COMMENT 'becomes mandatory on inscription;',
   `email` varchar(128) NOT NULL,
   `pseudo` varchar(64) DEFAULT NULL COMMENT 'used to discriminate between users with same firstName/lastName/birthDate, optional only for the contact page',
+  `passwordHash` binary(64) DEFAULT NULL COMMENT 'optional only for unregistered people',
   `statusId` int(10) unsigned NOT NULL,
   PRIMARY KEY (`studentId`),
   UNIQUE KEY `uq_email` (`email`),
@@ -246,7 +302,7 @@ CREATE TABLE `students` (
 
 LOCK TABLES `students` WRITE;
 /*!40000 ALTER TABLE `students` DISABLE KEYS */;
-INSERT INTO `students` VALUES (4,'student1','stud','2000-10-10','student1@yopmail.net','',2),(5,'student2','study',NULL,'student2@yopmail.org','study2',3),(6,'student2','study','2000-01-01','student3@yopmail.net','study3',3),(7,'asker','nobdy',NULL,'asker@yopmail.org',NULL,1);
+INSERT INTO `students` VALUES (4,'2018-11-01 00:30:02','student1','stud','2000-10-10','student1@yopmail.net','stu1',_binary 'ñ\—&ßp:ˆ\"¯@òL ∏†\Êº>ú\ÕK\rRÑù\‹UÉ\«CEé’Ä\Z¶j´+è™æiÜçˇ\–\√]\ƒ˜\Ó\ﬁ68à™\ÌS',2),(5,'2018-08-08 08:08:08','student2','study',NULL,'student2@yopmail.org','study2',_binary 'Û #ñ\Õπ¥\‘H)yV˙∑\·(\‡.\€]™ßÇ√∫Æç(∞¯ù}oGx™$\0ØßX\·≥U∂s—©ø\"5<E\Ïß\ÔoJ',3),(6,'2018-09-01 00:30:02','student2','study','2000-01-01','student3@yopmail.net','study3',_binary 'äD#^•áû\‘I∏í@4ÄÜ:\Ëq¿\–+\ﬂﬂ´—£É™O©\Œ]Lµñ≤ÑG≤∞2\„∂êçX∞^<\„H:\Í,gO9 c',3),(7,NULL,'asker','nobdy',NULL,'asker@yopmail.org',NULL,NULL,1);
 /*!40000 ALTER TABLE `students` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -263,8 +319,11 @@ CREATE TABLE `teachers` (
   `lastName` char(64) NOT NULL,
   `birthDate` date NOT NULL,
   `email` varchar(128) NOT NULL,
+  `pseudo` varchar(64) NOT NULL COMMENT 'used for login',
+  `passwordHash` binary(64) NOT NULL,
   PRIMARY KEY (`teacherId`),
   UNIQUE KEY `uq_email` (`email`),
+  UNIQUE KEY `uq_pseudo` (`pseudo`),
   UNIQUE KEY `uq_names_birth_pseudo` (`firstName`,`lastName`,`birthDate`,`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -275,7 +334,7 @@ CREATE TABLE `teachers` (
 
 LOCK TABLES `teachers` WRITE;
 /*!40000 ALTER TABLE `teachers` DISABLE KEYS */;
-INSERT INTO `teachers` VALUES (2,'Teac','Her2','1900-02-02','teacher2@yopmail.org'),(1,'Teach','Er','1900-01-01','teacher1@yopmail.org'),(3,'third','Teacher','1900-03-03','teacher3@yopmail.net');
+INSERT INTO `teachers` VALUES (1,'Teach','Er','1900-01-01','teacher1@yopmail.org','Teach',_binary 'ˆ\…˛2F-Ø≥\Ó¨_C\ ^7\ [4E7\‘y\0iU*ïPÆ“û\◊ì\Í£iá.Ék†bÖN@∑\Â´$\ZHñ˛6\ '),(2,'Teac','Her2','1900-02-02','teacher2@yopmail.org','Teac',_binary '∑@n\—ÇB<ÄáªdÆ\ŒwPÚ\0!$_\—,ç0B∑j¸\0GS\Í¡wt´\Âé\œBﬁã1Vrò-ç\€mÒ\Ÿ ûó'),(3,'third','Teacher','1900-03-03','teacher3@yopmail.net','third',_binary '™ì»Ñ≠\Îuçx%≤Ëëü\À¸\·æÖoÄ[G\Ï⁄û\ËÇÉ8<I\rÎàÆ#◊ë\r\Õe\Êcû∫\‰√î8\–ıˆ\Ìkû@');
 /*!40000 ALTER TABLE `teachers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -314,4 +373,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-31 23:26:43
+-- Dump completed on 2018-11-01  1:04:21
