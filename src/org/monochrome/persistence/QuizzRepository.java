@@ -96,6 +96,7 @@ public class QuizzRepository {
             quizz.isMcq = rs.getBoolean("isMcq");
             quizz.isRandom = rs.getBoolean("isRandom");
             quizz.teacherId = withFullData ? rs.getLong("teacherId") : 0;
+            quizz.lastEditUtc = rs.getTimestamp("lastEdit").toLocalDateTime();
             quizz.nbQuestions = (withFullData || (withQuestionsAndAnswers && quizz.isRandom)) ?
                                     rs.getInt("nbQuestions") : 0;
             if (withQuestionsAndAnswers) {
@@ -157,6 +158,7 @@ public class QuizzRepository {
                 quizz.slug = rs.getString("slug");
                 quizz.theme = theme;
                 quizz.teacherId = rs.getLong("teacherId");
+                quizz.lastEditUtc = rs.getTimestamp("lastEdit").toLocalDateTime();
                 quizz.isMcq = rs.getBoolean("isMCQ");
                 quizz.isRandom = rs.getBoolean("isRandom");
                 quizz.nbQuestions = rs.getInt("nbQuestions");
@@ -167,7 +169,7 @@ public class QuizzRepository {
             return result;
 
         } catch (SQLException e ) {
-            SingleLogger.logger.severe("Impossible to read Theme data from DB:");
+            SingleLogger.logger.severe("Impossible to read quizz data from DB:");
             SingleLogger.logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
             return null;
         }

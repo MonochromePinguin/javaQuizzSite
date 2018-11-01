@@ -164,7 +164,7 @@ CREATE TABLE `quizzes` (
   `slug` varchar(128) NOT NULL COMMENT 'the slug to use in the URL',
   `themeId` int(10) unsigned NOT NULL,
   `teacherId` int(10) unsigned NOT NULL COMMENT 'for now, this is the quizz''s creator, and the creator is also the only corrector â€“ in the future, we can add an intermedary table if we want more correctors',
-  `lastEditDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  `lastEdit` datetime DEFAULT CURRENT_TIMESTAMP,
   `isMCQ` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'if true, the quizz contains only MCQ, and can be automatically corrected; if false, it contains (or can contains in case of randomly-generated quizz) free-text answers, and cannot be automatically corrected',
   `isRandom` tinyint(1) NOT NULL COMMENT 'if true, the quizz is made from random questions pulled from a pool, and the following column is valid',
   `nbQuestions` int(10) unsigned DEFAULT NULL,
@@ -302,7 +302,7 @@ CREATE TABLE `students` (
 
 LOCK TABLES `students` WRITE;
 /*!40000 ALTER TABLE `students` DISABLE KEYS */;
-INSERT INTO `students` VALUES (4,'2018-11-01 00:30:02','student1','stud','2000-10-10','student1@yopmail.net','stu1',_binary '–\Ñ&§p:ö\"ø@˜L ¸ \æ¼>œ\ÍK\rR„\ÜUƒ\ÇCEÕ€\Z¦j«+ª¾i†ÿ\Ğ\Ã]\Ä÷\î\Ş68ˆª\íS',2),(5,'2018-08-08 08:08:08','student2','study',NULL,'student2@yopmail.org','study2',_binary 'ó #–\Í¹´\ÔH)yVú·\á(\à.\Û]ª§‚Ãº®(°ø}oGxª$\0¯§X\á³U¶sÑ©¿\"5<E\ì§\ïoJ',3),(6,'2018-09-01 00:30:02','student2','study','2000-01-01','student3@yopmail.net','study3',_binary 'ŠD#^¥‡\ÔI¸’@4€†:\èqÀ\Ğ+\ßß«Ñ£ƒªO©\Î]Lµ–²„G²°2\ã¶X°^<\ãH:\ê,gO9 c',3),(7,NULL,'asker','nobdy',NULL,'asker@yopmail.org',NULL,NULL,1);
+INSERT INTO `students` VALUES (4,'2018-11-01 00:30:02','student1','stud','2000-10-10','student1@yopmail.net','stu1',_binary 'ï¿½\ï¿½&ï¿½p:ï¿½\"ï¿½@ï¿½L ï¿½ï¿½\ï¿½>ï¿½\ï¿½K\rRï¿½ï¿½\ï¿½Uï¿½\ï¿½CEï¿½Õ€\Zï¿½jï¿½+ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½\ï¿½\ï¿½]\ï¿½ï¿½\ï¿½\ï¿½68ï¿½ï¿½\ï¿½S',2),(5,'2018-08-08 08:08:08','student2','study',NULL,'student2@yopmail.org','study2',_binary 'ï¿½ #ï¿½\ï¿½ï¿½ï¿½\ï¿½H)yVï¿½ï¿½\ï¿½(\ï¿½.\ï¿½]ï¿½ï¿½ï¿½Ãºï¿½ï¿½(ï¿½ï¿½ï¿½}oGxï¿½$\0ï¿½ï¿½X\ï¿½Uï¿½sÑ©ï¿½\"5<E\ï¿½ï¿½\ï¿½oJ',3),(6,'2018-09-01 00:30:02','student2','study','2000-01-01','student3@yopmail.net','study3',_binary 'ï¿½D#^ï¿½ï¿½ï¿½\ï¿½Iï¿½ï¿½@4ï¿½ï¿½:\ï¿½qï¿½\ï¿½+\ï¿½ß«Ñ£ï¿½ï¿½Oï¿½\ï¿½]Lï¿½ï¿½ï¿½ï¿½Gï¿½ï¿½2\ï¿½ï¿½ï¿½Xï¿½^<\ï¿½H:\ï¿½,gO9 c',3),(7,NULL,'asker','nobdy',NULL,'asker@yopmail.org',NULL,NULL,1);
 /*!40000 ALTER TABLE `students` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -334,7 +334,7 @@ CREATE TABLE `teachers` (
 
 LOCK TABLES `teachers` WRITE;
 /*!40000 ALTER TABLE `teachers` DISABLE KEYS */;
-INSERT INTO `teachers` VALUES (1,'Teach','Er','1900-01-01','teacher1@yopmail.org','Teach',_binary 'ö\Éş2F-¯³\î¬_C\Ê^7\Ê[4E7\Ôy\0iU*•P®Ò\×“\ê£i‡.ƒk b…N@·\å«$\ZH–ş6\Ê'),(2,'Teac','Her2','1900-02-02','teacher2@yopmail.org','Teac',_binary '·@n\Ñ‚B<€‡ğ»d®\ÎwPò\0!$_\Ñ,0B·jü\0GS\êÁwt«\å\ÏBŞ‹1Vr˜-\Ûmñ\ÙÊ—'),(3,'third','Teacher','1900-03-03','teacher3@yopmail.net','third',_binary 'ª“È„­\ëux%²è‘Ÿ\Ëü\á¾…o€[G\ìÚ\è‚ƒ8<I\rëˆ®#×‘\r\Íe\æcº\äÃ”8\Ğõö\ík@');
+INSERT INTO `teachers` VALUES (1,'Teach','Er','1900-01-01','teacher1@yopmail.org','Teach',_binary 'ï¿½\ï¿½ï¿½2F-ï¿½ï¿½\ï¿½ï¿½_C\ï¿½^7\ï¿½[4E7\ï¿½y\0iU*ï¿½Pï¿½Ò\ï¿½ï¿½\ï¿½iï¿½.ï¿½kï¿½bï¿½N@ï¿½\ï¿½$\ZHï¿½ï¿½6\ï¿½'),(2,'Teac','Her2','1900-02-02','teacher2@yopmail.org','Teac',_binary 'ï¿½@n\ï¿½ï¿½B<ï¿½ï¿½ï¿½ï¿½dï¿½\ï¿½wPï¿½\0!$_\ï¿½,ï¿½0Bï¿½jï¿½\0GS\ï¿½ï¿½wtï¿½\ï¿½\ï¿½BŞ‹1Vrï¿½-ï¿½\ï¿½mï¿½\ï¿½Êï¿½'),(3,'third','Teacher','1900-03-03','teacher3@yopmail.net','third',_binary 'ï¿½ï¿½È„ï¿½\ï¿½uï¿½x%ï¿½è‘Ÿ\ï¿½ï¿½\ï¿½ï¿½ï¿½oï¿½[G\ï¿½Ú\ï¿½ï¿½8<I\rëˆ®#×‘\r\ï¿½e\ï¿½cï¿½ï¿½\ï¿½Ã”8\ï¿½ï¿½ï¿½\ï¿½kï¿½@');
 /*!40000 ALTER TABLE `teachers` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -1,5 +1,6 @@
 package org.monochrome.models;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 //PUBLIC FIELDS: BAD PRACTICE, BUT EASY FOR THESE SIMPLE OBJECTS
@@ -9,9 +10,10 @@ public class Quizz {
     public String slug;
     public Theme theme;
     public long teacherId;
-    public boolean isMcq;       //does it contains only MCQ, or does it ALLOW questions with free-text answers?
-    public boolean isRandom;    //is the quizz built randomly from a pool of questions ?
-    public int nbQuestions;     //if !isRandom, this is a total count of question, UNRELATED TO DB CONTENT
+    public LocalDateTime lastEditUtc;   // ← must use UTC for interoperability.
+    public boolean isMcq;       // ← does it contains only MCQ, or does it ALLOW questions with free-text answers?
+    public boolean isRandom;    // ← is the quizz built randomly from a pool of questions ?
+    public int nbQuestions;     // ← if !isRandom, this is a total count of question, UNRELATED TO DB CONTENT
 
     //fields non existent in DB:
     // they are here for information gathering and checking
@@ -30,6 +32,7 @@ public class Quizz {
             String slug,
             Theme theme,
             long teacherId,
+            LocalDateTime lastEditUtc,
             boolean isMcq,
             boolean isRandom,
             int nbQuestions,
@@ -40,6 +43,7 @@ public class Quizz {
         this.slug = slug;
         this.theme = theme;
         this.teacherId = teacherId;
+        this.lastEditUtc = lastEditUtc;
         this.isMcq = isMcq;
         this.isRandom = isRandom;
         this.nbQuestions = nbQuestions;
@@ -67,6 +71,14 @@ public class Quizz {
 
     public long getTeacherId() {
         return teacherId;
+    }
+
+    public LocalDateTime getLastEditUtc() {
+        return lastEditUtc;
+    }
+
+    public void setLastEditUtc(LocalDateTime lastEditUtc) {
+        this.lastEditUtc = lastEditUtc;
     }
 
     public boolean isMcq() {

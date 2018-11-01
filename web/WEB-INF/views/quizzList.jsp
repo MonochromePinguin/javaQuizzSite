@@ -1,5 +1,12 @@
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.time.format.FormatStyle" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<c:set var="formatter" value="${DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)}" scope="application"/>
+
 <%--
 • quizz list page – quizzes are grouped by theme
 • accepted attributes :
@@ -63,9 +70,12 @@ _localy used:
                     <c:forEach items="${theme.quizzList}" var="quizz">
                         <div class="list-item">
                             <a class="btn btn-secondary" href="/entryQuizz/${fn:escapeXml(quizz.slug)}"
-                                title="go to quizz «${fn:escapeXml(quizz.name)}" >GO!</a>
+                                title="go to quizz «${fn:escapeXml(quizz.name)}" >GO</a>
 
-                            <p class="list-item-title">${fn:escapeXml(quizz.name)}</p>
+                            <div class="list-content-vertic">
+                                <p class="list-item-title">${fn:escapeXml(quizz.name)}</p>
+                                <p class="list-about">last edit ${quizz.lastEditUtc.format(formatter)}</p>
+                            </div>
                         </div>
                     </c:forEach>
 

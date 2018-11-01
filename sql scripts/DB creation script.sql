@@ -121,8 +121,8 @@ create table if not exists quizzes(
     teacherId     int unsigned not null
         comment 'for now, this is the quizz''s creator, and the creator is also the only corrector – in the future, we can add an intermedary table if we want more correctors',
 
-    lastEditDate  datetime default CURRENT_TIMESTAMP
-        comment 'beware of time-zone settings: a DATETIME does not record timezone, and so the best is to set MySQL to use UTC!',
+    lastEdit  datetime default CURRENT_TIMESTAMP
+        comment 'beware of time-zone settings: a DATETIME does not record timezone – the best bet seems to configure MySQL and/or the connection to MySQL use UTC',
 
     isMCQ         boolean not null default true
         comment 'if true, the quizz contains only MCQ, and can be automatically corrected; if false, it contains (or can contains in case of randomly-generated quizz) free-text answers, and cannot be automatically corrected',
